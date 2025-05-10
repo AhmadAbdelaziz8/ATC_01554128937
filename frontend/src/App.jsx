@@ -3,6 +3,7 @@ import HomePage from "./pages/HomePage";
 import NavBar from "./components/NavBar";
 import EventDetailsPage from "./pages/EventDetailsPage";
 import BookConfirmationPage from "./pages/BookConfirmationPage";
+import AuthPage from "./pages/AuthPage";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             path="/booking-confirmation/:eventId"
             element={<BookConfirmationPage />}
           />
+          <Route path="/auth" element={<AuthPage />} />
         </Routes>
       </main>
     </BrowserRouter>

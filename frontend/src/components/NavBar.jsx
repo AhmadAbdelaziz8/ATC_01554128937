@@ -61,10 +61,10 @@ export default function NavBar() {
           <Link to="/" className="hover:text-blue-500">
             create events
           </Link>
-          <Link to="/" className="hover:text-blue-500">
+          <Link to="/auth" className="hover:text-blue-500">
             log in
           </Link>
-          <Link to="/" className="hover:text-blue-500">
+          <Link to="/auth" className="hover:text-blue-500">
             sign-up
           </Link>
         </div>
