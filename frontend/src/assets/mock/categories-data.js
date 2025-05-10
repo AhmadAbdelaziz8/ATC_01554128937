@@ -3,7 +3,6 @@ import {
   Zap,
   Clapperboard,
   CalendarDays,
-  Heart,
   Gamepad2,
   Briefcase,
   Utensils,

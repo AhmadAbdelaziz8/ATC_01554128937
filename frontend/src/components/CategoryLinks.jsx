@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import categories from "../assets/mock/categories";
+import categories from "../assets/mock/categories-data";
 export default function CategoryLinks() {
   return (
     <div className="py-8 sm:py-12 bg-slate-50">
