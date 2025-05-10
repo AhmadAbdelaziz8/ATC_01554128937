@@ -5,7 +5,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import heroItems from "@/assets/carousel-data";
+import heroItems from "@/assets/mock/carousel-data";
 
 export default function HeroSection() {
   return (
