@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import NavBar from "./components/NavBar";
 import EventDetailsPage from "./pages/EventDetailsPage";
+import BookConfirmationPage from "./pages/BookConfirmationPage";
+
 function App() {
   return (
     <BrowserRouter>
@@ -10,6 +12,10 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/events/:eventId" element={<EventDetailsPage />} />
+          <Route
+            path="/booking-confirmation/:eventId"
+            element={<BookConfirmationPage />}
+          />
         </Routes>
       </main>
     </BrowserRouter>
