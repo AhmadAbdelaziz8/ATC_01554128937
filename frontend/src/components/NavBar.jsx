@@ -54,7 +54,7 @@ export default function NavBar() {
         </div>
 
         {/* {navigation links} */}
-        <div className="space-x-4">
+        <div className="space-x-4 hidden md:flex">
           <Link to="/" className="hover:text-blue-500">
             contact sales
           </Link>

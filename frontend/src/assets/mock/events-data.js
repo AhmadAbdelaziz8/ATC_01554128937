@@ -5,7 +5,7 @@ export const mockEvents = [
     description:
       "Join us for an unforgettable weekend of live music from top artists across various genres. Food trucks, art installations, and good vibes all around!",
     category: "Music",
-    date: "2024-07-20T18:00:00.000Z", 
+    date: "2024-07-20T18:00:00.000Z",
     venue: "Greenfield Park, Meadowview",
     price: 75.0,
     imageUrl:
@@ -23,11 +23,11 @@ export const mockEvents = [
     price: 250.0,
     imageUrl:
       "https://images.unsplash.com/photo-1517048676732-d65bc937f952?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-    isBooked: true, 
+    isBooked: true,
   },
   {
     id: "3",
-    name: "Artisan Food & Wine Expo",
+    name: "Artisan Food",
     description:
       "Discover local and international culinary delights. Tastings, cooking demonstrations, and unique food products.",
     category: "Food & Drink",
