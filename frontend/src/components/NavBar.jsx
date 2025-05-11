@@ -56,16 +56,10 @@ export default function NavBar() {
         {/* {navigation links} */}
         <div className="space-x-4 hidden md:flex">
           <Link to="/" className="hover:text-blue-500">
-            contact sales
-          </Link>
-          <Link to="/" className="hover:text-blue-500">
             create events
           </Link>
           <Link to="/auth" className="hover:text-blue-500">
-            log in
-          </Link>
-          <Link to="/auth" className="hover:text-blue-500">
-            sign-up
+            sign in
           </Link>
         </div>
       </div>
