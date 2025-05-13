@@ -21,9 +21,9 @@ const generateToken = (userId, userRole) => {
   );
 };
 
-//Registration Controller 
+//Registration Controller
 export const register = async (req, res) => {
-  const { fullName, email, password } = req.body;
+  const { fullName, email, password, role } = req.body;
 
   if (!email || !password) {
     return res
@@ -37,7 +37,7 @@ export const register = async (req, res) => {
   }
 
   try {
-    // 2. Check if user exists
+    //Check if user exists
     const existingUser = await prisma.user.findUnique({
       where: { email: email.toLowerCase() }, // Store emails consistently (lowercase)
     });
@@ -52,9 +52,10 @@ export const register = async (req, res) => {
 
     const user = await prisma.user.create({
       data: {
-        fullName, 
+        fullName,
         email: email.toLowerCase(),
         passwordHash,
+        role,
       },
       select: {
         id: true,
