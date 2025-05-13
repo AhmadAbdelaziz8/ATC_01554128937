@@ -12,7 +12,7 @@ const formatDate = (dateString) => {
 
 export default function EventCard({ event }) {
   if (!event) return null;
-
+  const eventPrice = parseInt(event.price).toFixed(2);
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col group transition-all duration-300 hover:shadow-xl">
       <Link to={`/events/${event.id}`} className="block">
@@ -47,7 +47,8 @@ export default function EventCard({ event }) {
 
         {/* Price*/}
         <div className="text-lg font-bold text-slate-700 mt-auto mb-3">
-          {event.price > 0 ? `$${event.price.toFixed(2)}` : "Free"}
+          {eventPrice > 0 ? `$${eventPrice}` : "Free"}
+          {/* {event.price} */}
         </div>
       </div>
 

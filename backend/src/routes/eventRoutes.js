@@ -10,17 +10,14 @@ import { protect, authorize } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-// create a new event
-router.post("/", protect, authorize("ADMIN"), createEvent);
-
 // get all events
 router.get("/", getAllEvents);
-
 // get event by ID
 router.get("/:id", getEventById);
+// create a new event
+router.post("/", protect, authorize("ADMIN"), createEvent);
 // update an event
 router.put("/:id", protect, authorize("ADMIN"), updateEvent);
-
 // delete an event
 router.delete("/:id", protect, authorize("ADMIN"), deleteEvent);
 

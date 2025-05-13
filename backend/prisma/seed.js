@@ -1,4 +1,7 @@
-export const mockEvents = [
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
+
+const events = [
   {
     id: "1",
     name: "Summer Music Festival 2024",
@@ -10,7 +13,6 @@ export const mockEvents = [
     price: 75.0,
     imageUrl:
       "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-    isBooked: false,
   },
   {
     id: "2",
@@ -23,7 +25,6 @@ export const mockEvents = [
     price: 250.0,
     imageUrl:
       "https://images.unsplash.com/photo-1517048676732-d65bc937f952?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-    isBooked: true,
   },
   {
     id: "3",
@@ -36,7 +37,6 @@ export const mockEvents = [
     price: 40.0,
     imageUrl:
       "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-    isBooked: false,
   },
   {
     id: "4",
@@ -49,6 +49,25 @@ export const mockEvents = [
     price: 15.0,
     imageUrl:
       "https://images.unsplash.com/photo-1598368542043-c10deardi07ba?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-    isBooked: false,
   },
 ];
+
+async function main() {
+  for (const event of events) {
+    await prisma.event.upsert({
+      where: { id: event.id },
+      update: {},
+      create: event,
+    });
+  }
+}
+
+main()
+  .then(() => {
+    console.log("Seeding finished.");
+    return prisma.$disconnect();
+  })
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  });
