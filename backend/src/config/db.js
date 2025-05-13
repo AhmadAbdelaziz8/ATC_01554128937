@@ -15,6 +15,7 @@ pool.connect((err, client, release) => {
       err.stack
     );
   }
+  
   client.query("SELECT NOW()", (err, result) => {
     release();
     if (err) {
