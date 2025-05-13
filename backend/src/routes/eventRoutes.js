@@ -18,7 +18,6 @@ router.get("/", getAllEvents);
 
 // get event by ID
 router.get("/:id", getEventById);
-
 // update an event
 router.put("/:id", protect, authorize("ADMIN"), updateEvent);
 

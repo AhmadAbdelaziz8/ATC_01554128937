@@ -4,9 +4,18 @@ import prisma from "../config/prismaClient.js";
 export const createEvent = async (req, res) => {
   try {
     // extract event data from request body
-    const { title, description, date, location, price, image } = req.body;
+    const { name, description, category, venue, imageUrl, date, price } =
+      req.body;
     // validate required fields
-    if (!title || !description || !date || !location || !price) {
+    if (
+      !name ||
+      !description ||
+      !category ||
+      !venue ||
+      !imageUrl ||
+      !date ||
+      !price
+    ) {
       return res.status(400).json({ message: "All fields are required" });
     }
     // create event in database
@@ -14,11 +23,10 @@ export const createEvent = async (req, res) => {
       name,
       description,
       category,
-      date: new Date(date),
       venue,
-      price: parseFloat(price),
       imageUrl,
-      createdById: req.user.id,
+      date: new Date(date),
+      price: parseFloat(price),
     };
 
     const newEvent = await prisma.event.create({
@@ -44,12 +52,13 @@ export const getAllEvents = async (req, res) => {
   }
 };
 
+// Get event by ID
 export const getEventById = async (req, res) => {
   try {
-    const { id } = req.params.id;
+    const eventId = req.params.id;
     // fetch event by ID from database
     const event = await prisma.event.findUnique({
-      where: { id: parseInt(id) },
+      where: { id: eventId },
     });
     // check if event exists
     if (!event) {
@@ -84,7 +93,7 @@ export const updateEvent = async (req, res) => {
     // update event in database
     const updatedEvent = await prisma.event.update({
       where: {
-        id: parseInt(eventId),
+        id: eventId,
       },
       data: updateData,
     });
