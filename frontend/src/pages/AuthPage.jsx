@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import LoginForm from "../components/Auth/LoginForm";
+import { login, register } from "../services/authService";
 import RegisterForm from "../components/Auth/RegisterForm";
 import OverlayPanelContent from "../components/Auth/OverlayPanelContent";
 
@@ -13,25 +14,38 @@ export default function AuthPage() {
   const [registerPassword, setRegisterPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleLoginSubmit = (e) => {
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    console.log("Login submitted with:", {
-      email: loginEmail,
-      password: loginPassword,
-    });
-    // TODO: API call
+    try {
+      const { token } = await login({
+        email: loginEmail,
+        password: loginPassword,
+      });
+      localStorage.setItem("token", token);
+      window.location.href = "/";
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
-  const handleRegisterSubmit = (e) => {
+  const handleRegisterSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    console.log("Register submitted with:", {
-      name: registerName,
-      email: registerEmail,
-      password: registerPassword,
-    });
-    // TODO: API call
+    try {
+      await register({
+        fullName: registerName,
+        email: registerEmail,
+        password: registerPassword,
+        role: "USER", 
+      });
+      setIsLoginPanelActive(true); // Switch to login panel after successful registration
+      setError("Registration successful! Please log in.");
+      window.location.href = "/";
+
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   const togglePanel = () => {
