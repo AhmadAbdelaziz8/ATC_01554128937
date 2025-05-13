@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import db from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import eventRoutes from "./routes/eventRoutes.js";
-
+import bookingRoutes from "./routes/bookingRoutes.js";
 dotenv.config();
 
 const app = express();
@@ -19,9 +19,12 @@ app.get("/api/test", (req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/events", eventRoutes);
+app.use("/api/bookings", bookingRoutes);
 
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+export default app;
