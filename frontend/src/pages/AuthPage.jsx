@@ -3,6 +3,8 @@ import LoginForm from "../components/Auth/LoginForm";
 import { login, register } from "../services/authService";
 import RegisterForm from "../components/Auth/RegisterForm";
 import OverlayPanelContent from "../components/Auth/OverlayPanelContent";
+import { useAuth } from "../AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function AuthPage() {
   const [isLoginPanelActive, setIsLoginPanelActive] = useState(true);
@@ -14,16 +16,19 @@ export default function AuthPage() {
   const [registerPassword, setRegisterPassword] = useState("");
   const [error, setError] = useState("");
 
+  const { login: loginUser } = useAuth();
+  const navigate = useNavigate();
+
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     setError("");
     try {
-      const { token } = await login({
+      const { token, user } = await login({
         email: loginEmail,
         password: loginPassword,
       });
-      localStorage.setItem("token", token);
-      window.location.href = "/";
+      loginUser(user, token);
+      navigate("/");
     } catch (err) {
       setError(err.message);
     }
@@ -37,12 +42,11 @@ export default function AuthPage() {
         fullName: registerName,
         email: registerEmail,
         password: registerPassword,
-        role: "USER", 
+        role: "USER",
       });
       setIsLoginPanelActive(true); // Switch to login panel after successful registration
       setError("Registration successful! Please log in.");
-      window.location.href = "/";
-
+      navigate("/");
     } catch (err) {
       setError(err.message);
     }

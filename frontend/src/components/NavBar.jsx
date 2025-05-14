@@ -1,7 +1,23 @@
 import { Link } from "react-router-dom";
 import { FiSearch, FiMapPin } from "react-icons/fi";
+import { useAuth } from "../AuthContext";
 
 export default function NavBar() {
+  const { user, isAuthenticated } = useAuth();
+
+  // Debug: log user and isAuthenticated
+  console.log("NavBar user:", user, "isAuthenticated:", isAuthenticated);
+
+  // Helper to get initials from user object
+  const getInitials = (user) => {
+    const fullName = user?.fullName || user?.name || "";
+    if (!fullName) return "";
+    const names = fullName.trim().split(" ");
+    const first = names[0]?.[0]?.toUpperCase() || "";
+    const last = names[1]?.[0]?.toUpperCase() || "";
+    return first + last;
+  };
+
   return (
     <nav className="bg-white shadow-xs">
       <div className="container mx-auto px-4 py-3 flex gap-4 items-center">
@@ -54,13 +70,19 @@ export default function NavBar() {
         </div>
 
         {/* {navigation links} */}
-        <div className="space-x-4 hidden md:flex">
+        <div className="space-x-4 hidden md:flex items-center">
           <Link to="/" className="hover:text-blue-500">
             create events
           </Link>
-          <Link to="/auth" className="hover:text-blue-500">
-            sign in
-          </Link>
+          {isAuthenticated && user ? (
+            <div className="w-9 h-9 flex items-center justify-center rounded-full bg-blue-500 text-white font-bold text-lg">
+              {getInitials(user)}
+            </div>
+          ) : (
+            <Link to="/auth" className="hover:text-blue-500">
+              sign in
+            </Link>
+          )}
         </div>
       </div>
     </nav>
