@@ -23,7 +23,7 @@ function EventGrid({ events }) {
   if (!events.length) {
     return (
       <p className="text-center text-slate-600">
-        No upcoming events at the moment. Check back soon!
+        No upcoming events at the moment
       </p>
     );
   }

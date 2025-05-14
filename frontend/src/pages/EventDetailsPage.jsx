@@ -9,7 +9,7 @@ import {
   Ticket,
   DollarSign,
 } from "lucide-react";
-
+import { getEventById } from "../services/eventService";
 const formatDate = (dateString) => {
   const options = {
     year: "numeric",
@@ -28,17 +28,17 @@ export default function EventDetailsPage() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setIsLoading(true);
-    const foundEvent = mockEvents.find((e) => e.id === eventId);
-
-    setTimeout(() => {
-      if (foundEvent) {
+    const fetchEvent = async () => {
+      try {
+        const foundEvent = await getEventById(eventId);
         setEvent(foundEvent);
-      } else {
-        console.error("Event not found!");
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching event:", error);
+        setIsLoading(false);
       }
-      setIsLoading(false);
-    }, 500);
+    };
+    fetchEvent();
   }, [eventId]);
 
   const handleBookNow = () => {
@@ -59,6 +59,8 @@ export default function EventDetailsPage() {
       </div>
     );
   }
+
+  const eventPrice = parseInt(event.price).toFixed(2);
 
   if (!event) {
     return (
@@ -124,7 +126,7 @@ export default function EventDetailsPage() {
               <DollarSign className="w-5 h-5 mr-3 mt-1 text-orange-500 flex-shrink-0" />
               <div>
                 <span className="font-semibold">Price:</span>
-                {event.price > 0 ? ` $${event.price.toFixed(2)}` : " Free"}
+                {eventPrice > 0 ? ` $${eventPrice}` : " Free"}
               </div>
             </div>
           </div>
