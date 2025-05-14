@@ -23,7 +23,7 @@ const generateToken = (userId, userRole) => {
 
 //Registration Controller
 export const register = async (req, res) => {
-  const { fullName, email, password, role } = req.body;
+  const { fullName, email, password, isRequestingAdminRole } = req.body;
 
   if (!email || !password) {
     return res
@@ -50,6 +50,9 @@ export const register = async (req, res) => {
     const salt = await bcrypt.genSalt(10); // Generate salt (10 rounds is generally good)
     const passwordHash = await bcrypt.hash(password, salt);
 
+    // Determine role based on isRequestingAdminRole flag
+    const role = isRequestingAdminRole ? "ADMIN" : "USER";
+
     const user = await prisma.user.create({
       data: {
         fullName,
@@ -66,7 +69,13 @@ export const register = async (req, res) => {
       },
     });
 
-    res.status(201).json({ message: "User registered successfully", user });
+    res.status(201).json({
+      message: "User registered successfully",
+      user,
+      securityNote: isRequestingAdminRole
+        ? "Note: This approach of allowing a simple flag from the client to grant admin rights is insecure for production environments. In a real application, admin creation should be handled through a separate, secured process."
+        : undefined,
+    });
   } catch (error) {
     console.error("Registration error:", error);
     res

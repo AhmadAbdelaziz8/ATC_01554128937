@@ -11,8 +11,10 @@ const RegisterForm = ({
   setEmail,
   password,
   setPassword,
+  isAdmin,
+  setIsAdmin,
   onSubmit,
-  onTogglePanel, 
+  onTogglePanel,
   error,
 }) => {
   return (
@@ -61,6 +63,18 @@ const RegisterForm = ({
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+        </div>
+        <div className="flex items-center space-x-2">
+          <input
+            type="checkbox"
+            id="isAdmin"
+            className="rounded text-blue-600 focus:ring-blue-500"
+            checked={isAdmin}
+            onChange={(e) => setIsAdmin(e.target.checked)}
+          />
+          <label htmlFor="isAdmin" className="text-sm text-slate-600 text-left">
+            Register as Administrator
+          </label>
         </div>
       </div>
       {error && <p className="text-sm text-red-500 mb-4">{error}</p>}

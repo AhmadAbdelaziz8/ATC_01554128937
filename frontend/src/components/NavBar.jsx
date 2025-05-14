@@ -95,6 +95,14 @@ export default function NavBar() {
               My Bookings
             </Link>
           )}
+          {isAuthenticated && user && user.role === "ADMIN" && (
+            <Link
+              to="/admin"
+              className="text-gray-700 hover:text-blue-600 font-medium"
+            >
+              Admin Panel
+            </Link>
+          )}
           {isAuthenticated && user ? (
             <div className="relative">
               <div
@@ -118,6 +126,9 @@ export default function NavBar() {
                     </span>
                     <span className="text-xs text-gray-500 mb-2">
                       {user.email}
+                    </span>
+                    <span className="text-xs font-medium bg-gray-100 px-2 py-1 rounded text-gray-600">
+                      {user.role || "USER"}
                     </span>
                   </div>
                   <button

@@ -74,7 +74,13 @@ export const getAllBookings = async (req, res) => {
       where: { userId },
       include: {
         event: {
-          select: { name: true, date: true, venue: true },
+          select: {
+            name: true,
+            date: true,
+            venue: true,
+            imageUrl: true,
+            price: true,
+          },
         },
       },
     });

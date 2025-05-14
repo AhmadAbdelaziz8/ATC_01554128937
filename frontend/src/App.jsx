@@ -6,6 +6,11 @@ import EventDetailsPage from "./pages/EventDetailsPage";
 import BookConfirmationPage from "./pages/BookConfirmationPage";
 import AuthPage from "./pages/AuthPage";
 import MyBookingsPage from "./pages/MyBookingsPage";
+import ProtectedAdminRoute from "./components/routes/ProtectedAdminRoute";
+import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
+import AdminEventListPage from "./pages/admin/AdminEventListPage";
+import CreateEventPage from "./pages/admin/CreateEventPage";
+import EditEventPage from "./pages/admin/EditEventPage";
 
 // Protected route component
 const ProtectedRoute = ({ children }) => {
@@ -27,6 +32,7 @@ function App() {
         <NavBar />
         <main className="container mx-auto p-4 mt-4">
           <Routes>
+            {/* Public and User Routes */}
             <Route path="/" element={<HomePage />} />
             <Route path="/events/:eventId" element={<EventDetailsPage />} />
             <Route
@@ -38,7 +44,6 @@ function App() {
               }
             />
             <Route path="/auth" element={<AuthPage />} />
-
             <Route
               path="/my-bookings"
               element={
@@ -47,6 +52,19 @@ function App() {
                 </ProtectedRoute>
               }
             />
+
+            {/* Admin Routes */}
+            <Route path="/admin" element={<ProtectedAdminRoute />}>
+              <Route element={<AdminDashboardPage />}>
+                <Route
+                  index
+                  element={<Navigate to="/admin/events" replace />}
+                />
+                <Route path="events" element={<AdminEventListPage />} />
+                <Route path="events/new" element={<CreateEventPage />} />
+                <Route path="events/edit/:id" element={<EditEventPage />} />
+              </Route>
+            </Route>
           </Routes>
         </main>
       </BrowserRouter>

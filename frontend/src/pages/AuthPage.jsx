@@ -14,6 +14,7 @@ export default function AuthPage() {
   const [registerName, setRegisterName] = useState("");
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
   const [error, setError] = useState("");
 
   const { login: loginUser } = useAuth();
@@ -42,7 +43,7 @@ export default function AuthPage() {
         fullName: registerName,
         email: registerEmail,
         password: registerPassword,
-        role: "USER",
+        isRequestingAdminRole: isAdmin,
       });
       setIsLoginPanelActive(true); // Switch to login panel after successful registration
       setError("Registration successful! Please log in.");
@@ -60,6 +61,7 @@ export default function AuthPage() {
     setRegisterName("");
     setRegisterEmail("");
     setRegisterPassword("");
+    setIsAdmin(false);
   };
 
   return (
@@ -101,6 +103,8 @@ export default function AuthPage() {
             setEmail={setRegisterEmail}
             password={registerPassword}
             setPassword={setRegisterPassword}
+            isAdmin={isAdmin}
+            setIsAdmin={setIsAdmin}
             onSubmit={handleRegisterSubmit}
             onTogglePanel={togglePanel}
             error={!isLoginPanelActive ? error : ""}
