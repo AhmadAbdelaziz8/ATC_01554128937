@@ -22,3 +22,18 @@ export async function register({ fullName, email, password, role }) {
   if (!response.ok) throw new Error(data.message || "Registration failed");
   return data; // { user }
 }
+
+export async function getCurrentUser(token) {
+  const response = await fetch(`${BASE_URL}/api/auth/me`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.message || "Failed to get user data");
+
+  return data.user;
+}
