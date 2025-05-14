@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
 import { FiSearch, FiMapPin } from "react-icons/fi";
 import { useAuth } from "../AuthContext";
+import { useState, useRef, useEffect } from "react";
 
 export default function NavBar() {
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, logout } = useAuth();
+  const [showModal, setShowModal] = useState(false);
+  const avatarRef = useRef(null);
+  const dropdownRef = useRef(null);
 
-  // Debug: log user and isAuthenticated
-  console.log("NavBar user:", user, "isAuthenticated:", isAuthenticated);
-
-  // Helper to get initials from user object
   const getInitials = (user) => {
     const fullName = user?.fullName || user?.name || "";
     if (!fullName) return "";
@@ -18,65 +18,122 @@ export default function NavBar() {
     return first + last;
   };
 
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target) &&
+        avatarRef.current &&
+        !avatarRef.current.contains(event.target)
+      ) {
+        setShowModal(false);
+      }
+    }
+    if (showModal) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showModal]);
+
+  const handleAvatarClick = () => setShowModal((v) => !v);
+  const handleCloseModal = () => setShowModal(false);
+  const handleLogout = () => {
+    logout();
+    setShowModal(false);
+  };
+
   return (
     <nav className="bg-white shadow-xs">
       <div className="container mx-auto px-4 py-3 flex gap-4 items-center">
-        {/* Logo */}
         <Link to="/" className="font-bold text-2xl text-blue-500">
           Bookify
         </Link>
         <div className="flex-1 max-w-2xl mx-4">
-          {" "}
-          {/* container of search bar */}
           <div className="flex flex-1 items-center border border-gray-300 rounded-full shadow-sm hover:shadow-md transition-shadow duration-200">
-            {/* Search Events Input with Icon */}
             <div className="flex items-center flex-grow pl-4">
-              {" "}
-              {/* pl-4 for padding before icon */}
               <FiSearch className="text-gray-500 mr-2" size={20} />
               <input
                 type="text"
                 placeholder="Search events"
                 className="w-full py-2 pr-2 text-sm text-gray-700 focus:outline-none"
-                // Removed individual border/ring as it's on the parent
               />
             </div>
-
-            {/* Vertical Divider */}
             <div className="h-6 border-l border-gray-300 mx-2"></div>
-
-            {/* Location Input */}
             <div className="flex items-center flex-grow pl-2">
-              {" "}
-              {/* pl-2, pr-4 for padding around icon */}
               <FiMapPin className="text-gray-500 mr-2" size={20} />
               <input
                 type="text"
                 placeholder="Location"
                 className="w-full py-2 pr-4 text-sm text-gray-700 focus:outline-none"
-                // Removed individual border/ring
               />
             </div>
-
-            {/* Search Button */}
             <button
               type="button"
-              className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full m-1" // m-1 to give some space inside the parent
+              className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full m-1"
               aria-label="Search"
             >
               <FiSearch size={20} />
             </button>
           </div>
         </div>
-
-        {/* {navigation links} */}
         <div className="space-x-4 hidden md:flex items-center">
-          <Link to="/" className="hover:text-blue-500">
+          <Link
+            to="/"
+            className="text-gray-700 hover:text-blue-600 font-medium"
+          >
             create events
           </Link>
+          {isAuthenticated && user && (
+            <Link
+              to="/my-bookings"
+              className="text-gray-700 hover:text-blue-600 font-medium"
+            >
+              My Bookings
+            </Link>
+          )}
           {isAuthenticated && user ? (
-            <div className="w-9 h-9 flex items-center justify-center rounded-full bg-blue-500 text-white font-bold text-lg">
-              {getInitials(user)}
+            <div className="relative">
+              <div
+                ref={avatarRef}
+                className="w-9 h-9 flex items-center justify-center rounded-full bg-blue-500 text-white font-bold text-lg cursor-pointer"
+                onClick={handleAvatarClick}
+              >
+                {getInitials(user)}
+              </div>
+              {showModal && (
+                <div
+                  ref={dropdownRef}
+                  className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg py-3 z-50 border"
+                >
+                  <div className="flex flex-col items-center px-4 pb-2">
+                    <div className="w-12 h-12 flex items-center justify-center rounded-full bg-blue-500 text-white font-bold text-2xl mb-2">
+                      {getInitials(user)}
+                    </div>
+                    <span className="font-semibold text-slate-700 mb-1">
+                      {user.fullName || user.name}
+                    </span>
+                    <span className="text-xs text-gray-500 mb-2">
+                      {user.email}
+                    </span>
+                  </div>
+                  <button
+                    onClick={handleLogout}
+                    className="w-11/12 mx-auto block bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded mb-2 transition"
+                  >
+                    Logout
+                  </button>
+                  <button
+                    onClick={handleCloseModal}
+                    className="w-11/12 mx-auto block bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded transition"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              )}
             </div>
           ) : (
             <Link to="/auth" className="hover:text-blue-500">

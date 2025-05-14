@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { mockEvents } from "../assets/mock/events-data";
 import {
   CalendarDays,
   MapPin,
@@ -10,6 +9,9 @@ import {
   DollarSign,
 } from "lucide-react";
 import { getEventById } from "../services/eventService";
+import { bookEvent } from "../services/bookingService";
+import { useAuth } from "../AuthContext";
+
 const formatDate = (dateString) => {
   const options = {
     year: "numeric",
@@ -26,6 +28,9 @@ export default function EventDetailsPage() {
   const navigate = useNavigate();
   const [event, setEvent] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [bookingInProgress, setBookingInProgress] = useState(false);
+  const [bookingError, setBookingError] = useState(null);
+  const { token, isAuthenticated } = useAuth();
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -41,15 +46,24 @@ export default function EventDetailsPage() {
     fetchEvent();
   }, [eventId]);
 
-  const handleBookNow = () => {
-    console.log(`Booking event: ${event.name} (ID: ${event.id})`);
-
-    const eventIndex = mockEvents.findIndex((e) => e.id === eventId);
-    if (eventIndex !== -1) {
-      mockEvents[eventIndex].isBooked = true;
+  const handleBookNow = async () => {
+    if (!isAuthenticated) {
+      navigate("/auth");
+      return;
     }
 
-    navigate(`/booking-confirmation/${event.id}`); // Navigate to a confirmation page
+    setBookingInProgress(true);
+    setBookingError(null);
+
+    try {
+      await bookEvent(event.id, token);
+      navigate(`/booking-confirmation/${event.id}`);
+    } catch (error) {
+      console.error("Booking failed:", error);
+      setBookingError(error.message);
+    } finally {
+      setBookingInProgress(false);
+    }
   };
 
   if (isLoading) {
@@ -143,24 +157,44 @@ export default function EventDetailsPage() {
           </div>
 
           {/* Booking Button */}
+          <div className="text-center mb-6">
+            {bookingError && (
+              <div className="text-red-500 mb-4">{bookingError}</div>
+            )}
 
-          {event.isBooked ? (
-            <div className="text-center">
-              <span className="bg-green-100 text-green-700 font-semibold py-3 px-8 rounded-lg text-lg inline-block">
-                You have already booked this event.
-              </span>
-            </div>
-          ) : (
-            <div className="text-center">
-              <button
-                onClick={handleBookNow}
-                className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-10 rounded-lg text-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50"
-              >
-                <Ticket className="w-5 h-5 mr-2 inline-block" />
-                Book Now (1 Ticket)
-              </button>
-            </div>
-          )}
+            <button
+              onClick={handleBookNow}
+              disabled={bookingInProgress}
+              className={`
+                bg-orange-500 hover:bg-orange-600 text-white font-bold 
+                py-3 px-10 rounded-lg text-lg transition duration-300
+                ${
+                  bookingInProgress
+                    ? "opacity-75 cursor-not-allowed"
+                    : "hover:scale-105"
+                }
+                focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50
+              `}
+            >
+              {bookingInProgress ? (
+                <>
+                  <span className="inline-block w-5 h-5 mr-2 border-t-2 border-b-2 border-white rounded-full animate-spin"></span>
+                  Booking...
+                </>
+              ) : (
+                <>
+                  <Ticket className="w-5 h-5 mr-2 inline-block" />
+                  Book Now (1 Ticket)
+                </>
+              )}
+            </button>
+
+            {!isAuthenticated && (
+              <div className="mt-3 text-sm text-gray-600">
+                You need to be logged in to book this event.
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

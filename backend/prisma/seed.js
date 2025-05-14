@@ -1,16 +1,23 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
+function getRandomFutureDate(daysFromNow = 30, range = 60) {
+  const today = new Date();
+  const futureDate = new Date(today);
+  const daysToAdd = daysFromNow + Math.floor(Math.random() * range);
+  futureDate.setDate(futureDate.getDate() + daysToAdd);
+  return futureDate;
+}
+
 const events = [
   {
     id: "1",
-    name: "Summer Music Festival 2024",
-    description:
-      "Join us for an unforgettable weekend of live music from top artists across various genres. Food trucks, art installations, and good vibes all around!",
-    category: "Music",
-    date: "2024-07-20T18:00:00.000Z",
-    venue: "Greenfield Park, Meadowview",
-    price: 75.0,
+    name: "Tech Conference 2025",
+    description: "A conference for tech enthusiasts...",
+    date: getRandomFutureDate(30, 60).toISOString(), // 30-90 days from now
+    venue: "Convention Center, Downtown",
+    category: "Technology",
+    price: 199,
     imageUrl:
       "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
   },
@@ -20,7 +27,7 @@ const events = [
     description:
       "A two-day conference featuring keynote speakers, workshops, and networking opportunities with leaders in the tech industry. Explore the future of technology.",
     category: "Business",
-    date: "2024-09-10T09:00:00.000Z",
+    date: getRandomFutureDate(30, 60).toISOString(),
     venue: "Grand Convention Center, City Center",
     price: 250.0,
     imageUrl:
@@ -32,7 +39,7 @@ const events = [
     description:
       "Discover local and international culinary delights. Tastings, cooking demonstrations, and unique food products.",
     category: "Food & Drink",
-    date: "2024-08-05T12:00:00.000Z",
+    date: getRandomFutureDate(30, 60).toISOString(),
     venue: "The Waterfront Pavilion",
     price: 40.0,
     imageUrl:

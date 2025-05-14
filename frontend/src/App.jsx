@@ -5,7 +5,7 @@ import NavBar from "./components/NavBar";
 import EventDetailsPage from "./pages/EventDetailsPage";
 import BookConfirmationPage from "./pages/BookConfirmationPage";
 import AuthPage from "./pages/AuthPage";
-// import MyBookingsPage from "./pages/MyBookingsPage";
+import MyBookingsPage from "./pages/MyBookingsPage";
 
 // Protected route component
 const ProtectedRoute = ({ children }) => {
@@ -38,7 +38,7 @@ function App() {
               }
             />
             <Route path="/auth" element={<AuthPage />} />
-            {/*
+
             <Route
               path="/my-bookings"
               element={
@@ -47,7 +47,6 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            */}
           </Routes>
         </main>
       </BrowserRouter>
