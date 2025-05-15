@@ -57,21 +57,22 @@ const EventForm = ({ event, onSubmit, isSubmitting }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     // Create FormData object if we have an image file
     if (imageFile) {
       const submitData = new FormData();
-      
+
       // Add all form fields to FormData
-      Object.keys(formData).forEach(key => {
-        if (key !== "imageUrl" || formData[key]) { // Only add imageUrl if it exists
+      Object.keys(formData).forEach((key) => {
+        if (key !== "imageUrl" || formData[key]) {
+          // Only add imageUrl if it exists
           submitData.append(key, formData[key]);
         }
       });
-      
+
       // Add the image file
       submitData.append("image", imageFile);
-      
+
       onSubmit(submitData);
     } else {
       // No file upload, just submit the regular form data
@@ -82,7 +83,7 @@ const EventForm = ({ event, onSubmit, isSubmitting }) => {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
-        <label className="block text-sm font-medium text-gray-700">
+        <label className="block text-sm font-medium text-gray-700 dark:text-white">
           Event Name
         </label>
         <Input
@@ -96,7 +97,7 @@ const EventForm = ({ event, onSubmit, isSubmitting }) => {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">
+        <label className="block text-sm font-medium text-gray-700 dark:text-white">
           Description
         </label>
         <textarea
@@ -105,13 +106,13 @@ const EventForm = ({ event, onSubmit, isSubmitting }) => {
           onChange={handleChange}
           required
           rows={4}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
         />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-medium text-gray-700 dark:text-white">
             Category
           </label>
           <Input
@@ -125,7 +126,7 @@ const EventForm = ({ event, onSubmit, isSubmitting }) => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-medium text-gray-700 dark:text-white">
             Date
           </label>
           <Input
@@ -141,7 +142,7 @@ const EventForm = ({ event, onSubmit, isSubmitting }) => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-medium text-gray-700 dark:text-white">
             Venue
           </label>
           <Input
@@ -155,7 +156,7 @@ const EventForm = ({ event, onSubmit, isSubmitting }) => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-medium text-gray-700 dark:text-white">
             Price
           </label>
           <Input
@@ -172,7 +173,7 @@ const EventForm = ({ event, onSubmit, isSubmitting }) => {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">
+        <label className="block text-sm font-medium text-gray-700 dark:text-white">
           Image
         </label>
         <div className="mt-1 space-y-2">
@@ -182,10 +183,10 @@ const EventForm = ({ event, onSubmit, isSubmitting }) => {
             onChange={handleImageChange}
             className="mt-1"
           />
-          
+
           {!imageFile && (
             <div className="mt-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-white mb-1">
                 Or provide an image URL
               </label>
               <Input
@@ -198,14 +199,16 @@ const EventForm = ({ event, onSubmit, isSubmitting }) => {
               />
             </div>
           )}
-          
+
           {previewUrl && (
             <div className="mt-2">
-              <p className="text-sm font-medium text-gray-700 mb-1">Image Preview:</p>
-              <img 
-                src={previewUrl} 
-                alt="Preview" 
-                className="h-40 object-cover rounded-md border border-gray-300" 
+              <p className="text-sm font-medium text-gray-700 dark:text-white mb-1">
+                Image Preview:
+              </p>
+              <img
+                src={previewUrl}
+                alt="Preview"
+                className="h-40 object-cover rounded-md border border-gray-300 dark:border-gray-700"
               />
             </div>
           )}

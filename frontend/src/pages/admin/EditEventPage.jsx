@@ -32,7 +32,7 @@ const EditEventPage = () => {
   const handleSubmit = async (formData) => {
     setIsSubmitting(true);
     setError(null);
-    
+
     try {
       await updateEvent(id, formData, token);
       navigate("/admin/events");
@@ -43,24 +43,30 @@ const EditEventPage = () => {
   };
 
   if (isLoading) {
-    return <div className="text-center p-8">Loading event...</div>;
+    return (
+      <div className="text-center p-8 dark:text-white">Loading event...</div>
+    );
   }
 
   if (error && !event) {
-    return <div className="text-center p-8 text-red-500">{error}</div>;
+    return (
+      <div className="text-center p-8 text-red-500 dark:text-red-400">
+        {error}
+      </div>
+    );
   }
 
   return (
     <div>
-      <h2 className="text-xl font-semibold mb-6">Edit Event</h2>
-      
+      <h2 className="text-xl font-semibold mb-6 dark:text-white">Edit Event</h2>
+
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6 dark:bg-red-900/20 dark:border-red-800 dark:text-red-400">
           {error}
         </div>
       )}
-      
-      <EventForm 
+
+      <EventForm
         event={event}
         onSubmit={handleSubmit}
         isSubmitting={isSubmitting}
@@ -69,4 +75,4 @@ const EditEventPage = () => {
   );
 };
 
-export default EditEventPage; 
+export default EditEventPage;
