@@ -6,6 +6,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import heroItems from "@/assets/mock/carousel-data";
+import { Button } from "./ui/Button";
 
 export default function HeroSection() {
   return (
@@ -39,9 +40,13 @@ export default function HeroSection() {
                     <p className="text-base sm:text-lg md:text-xl mb-6 sm:mb-8 max-w-xl md:max-w-2xl mx-auto">
                       {item.subtitle}
                     </p>
-                    <button className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-6 sm:py-3 sm:px-8 rounded-lg text-base sm:text-lg transition duration-300 ease-in-out transform hover:scale-105">
+                    <Button
+                      variant="secondary"
+                      size="lg"
+                      className="transform hover:scale-105"
+                    >
                       {item.buttonText}
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>

@@ -10,21 +10,25 @@ import { useAuth } from "../AuthContext";
 function LoadingSpinner() {
   return (
     <div className="flex justify-center items-center h-64">
-      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-slate-800"></div>
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-800 dark:border-gray-200"></div>
     </div>
   );
 }
 
 // Error Message Component
 function ErrorMessage({ message }) {
-  return <p className="text-center text-red-600">Error: {message}</p>;
+  return (
+    <p className="text-center text-red-600 dark:text-red-400">
+      Error: {message}
+    </p>
+  );
 }
 
 // Event Grid Component
 function EventGrid({ events }) {
   if (!events.length) {
     return (
-      <p className="text-center text-slate-600">
+      <p className="text-center text-gray-600 dark:text-gray-400">
         No upcoming events at the moment
       </p>
     );
@@ -75,13 +79,13 @@ export default function HomePage() {
   }, [token, isAuthenticated]);
 
   return (
-    <div className="text-3xl font-bold">
+    <div>
       <HeroSection />
       <CategoryLinks />
 
       {/* Upcoming Events Section */}
       <div className="container mx-auto px-4 py-8 sm:py-12">
-        <h2 className="text-2xl sm:text-3xl font-semibold text-center mb-8 sm:mb-10 text-slate-800">
+        <h2 className="text-2xl sm:text-3xl font-semibold text-center mb-8 sm:mb-10 text-foreground dark:text-dark-text">
           Upcoming Events
         </h2>
         {loading ? (

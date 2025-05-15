@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
-import { CalendarDays, MapPin, Ticket } from "lucide-react";
+import { CalendarDays, MapPin } from "lucide-react";
 import { useState } from "react";
+import { Card, CardContent, CardFooter } from "../ui/Card";
+import { LinkButton } from "../ui/Button";
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
@@ -16,16 +18,12 @@ export default function EventCard({ event }) {
 
   if (!event) return null;
   const eventPrice = parseInt(event.price).toFixed(2);
-
   const fallbackImageUrl =
     "https://via.placeholder.com/400x250?text=Event+Image";
-
-  const handleImageError = () => {
-    setImageError(true);
-  };
+  const handleImageError = () => setImageError(true);
 
   return (
-    <div className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col group transition-all duration-300 hover:shadow-xl">
+    <Card className="flex flex-col group transition-all duration-300 hover:shadow-xl h-full">
       <Link to={`/events/${event.id}`} className="block">
         <img
           src={
@@ -37,47 +35,46 @@ export default function EventCard({ event }) {
         />
       </Link>
 
-      <div className="p-4 flex flex-col flex-grow">
+      <CardContent className="flex flex-col flex-grow">
         <Link to={`/events/${event.id}`} className="block mb-2">
-          <h3 className="text-xl font-semibold text-slate-800 group-hover:text-orange-600 transition-colors">
+          <h3 className="text-xl font-semibold text-foreground dark:text-dark-text group-hover:text-secondary transition-colors">
             {event.name}
           </h3>
         </Link>
 
-        <div className="text-sm text-slate-600 mb-1 flex items-center">
+        <div className="text-sm text-gray-600 dark:text-gray-300 mb-1 flex items-center">
           <CalendarDays
-            className="mr-2 text-orange-500 h-4 w-4"
+            className="mr-2 text-secondary h-4 w-4"
             strokeWidth={2}
           />
           <span>{formatDate(event.date)}</span>
         </div>
-        <div className="text-sm text-slate-600 mb-3 flex items-center">
-          <MapPin className="mr-2 text-orange-500 h-4 w-4" strokeWidth={2} />{" "}
+
+        <div className="text-sm text-gray-600 dark:text-gray-300 mb-3 flex items-center">
+          <MapPin className="mr-2 text-secondary h-4 w-4" strokeWidth={2} />
           <span>{event.venue}</span>
         </div>
 
-        {/* Price*/}
-        <div className="text-lg font-bold text-slate-700 mt-auto mb-3">
+        <div className="text-lg font-bold text-foreground dark:text-white mt-auto mb-3">
           {eventPrice > 0 ? `$${eventPrice}` : "Free"}
-          {/* {event.price} */}
         </div>
-      </div>
+      </CardContent>
 
-      {/* book button*/}
-      <div className="px-4 pb-4 pt-2 border-t border-slate-200">
+      <CardFooter className="px-4 pb-4 pt-2">
         {event.isBooked ? (
           <span className="w-full block text-center bg-green-500 text-white py-2 px-4 rounded-md font-semibold">
             Booked
           </span>
         ) : (
-          <Link
-            to={`/events/${event.id}`} // Or a dedicated booking link/handler
-            className="w-full block text-center bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-md transition-colors"
+          <LinkButton
+            to={`/events/${event.id}`}
+            variant="secondary"
+            className="w-full justify-center"
           >
             Book Now
-          </Link>
+          </LinkButton>
         )}
-      </div>
-    </div>
+      </CardFooter>
+    </Card>
   );
 }

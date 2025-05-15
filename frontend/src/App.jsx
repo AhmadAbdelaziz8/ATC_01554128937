@@ -32,47 +32,49 @@ function App() {
     <AuthProvider>
       <BrowserRouter>
         <NavBar />
-        <main className="container mx-auto p-4 mt-4">
-          <Routes>
-            {/* Public and User Routes */}
-            <Route path="/" element={<HomePage />} />
-            <Route path="/search" element={<SearchResultsPage />} />
-            <Route
-              path="/category/:categorySlug"
-              element={<CategoryResultsPage />}
-            />
-            <Route path="/events/:eventId" element={<EventDetailsPage />} />
-            <Route
-              path="/booking-confirmation/:eventId"
-              element={
-                <ProtectedRoute>
-                  <BookConfirmationPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route path="/auth" element={<AuthPage />} />
-            <Route
-              path="/my-bookings"
-              element={
-                <ProtectedRoute>
-                  <MyBookingsPage />
-                </ProtectedRoute>
-              }
-            />
+        <main className="min-h-screen bg-background dark:bg-dark-gradient transition-colors duration-200">
+          <div className="container mx-auto p-4">
+            <Routes>
+              {/* Public and User Routes */}
+              <Route path="/" element={<HomePage />} />
+              <Route path="/search" element={<SearchResultsPage />} />
+              <Route
+                path="/category/:categorySlug"
+                element={<CategoryResultsPage />}
+              />
+              <Route path="/events/:eventId" element={<EventDetailsPage />} />
+              <Route
+                path="/booking-confirmation/:eventId"
+                element={
+                  <ProtectedRoute>
+                    <BookConfirmationPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="/auth" element={<AuthPage />} />
+              <Route
+                path="/my-bookings"
+                element={
+                  <ProtectedRoute>
+                    <MyBookingsPage />
+                  </ProtectedRoute>
+                }
+              />
 
-            {/* Admin Routes */}
-            <Route path="/admin" element={<ProtectedAdminRoute />}>
-              <Route element={<AdminDashboardPage />}>
-                <Route
-                  index
-                  element={<Navigate to="/admin/events" replace />}
-                />
-                <Route path="events" element={<AdminEventListPage />} />
-                <Route path="events/new" element={<CreateEventPage />} />
-                <Route path="events/edit/:id" element={<EditEventPage />} />
+              {/* Admin Routes */}
+              <Route path="/admin" element={<ProtectedAdminRoute />}>
+                <Route element={<AdminDashboardPage />}>
+                  <Route
+                    index
+                    element={<Navigate to="/admin/events" replace />}
+                  />
+                  <Route path="events" element={<AdminEventListPage />} />
+                  <Route path="events/new" element={<CreateEventPage />} />
+                  <Route path="events/edit/:id" element={<EditEventPage />} />
+                </Route>
               </Route>
-            </Route>
-          </Routes>
+            </Routes>
+          </div>
         </main>
       </BrowserRouter>
     </AuthProvider>

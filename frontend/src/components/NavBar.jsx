@@ -3,6 +3,7 @@ import { FiSearch } from "react-icons/fi";
 import { useAuth } from "../AuthContext";
 import { useState, useRef, useEffect } from "react";
 import LocationSearch from "./ui/LocationSearch";
+import ThemeToggle from "./ui/ThemeToggle";
 
 export default function NavBar() {
   const { user, isAuthenticated, logout } = useAuth();
@@ -15,7 +16,6 @@ export default function NavBar() {
   const avatarRef = useRef(null);
   const dropdownRef = useRef(null);
 
-  // Update locationSearch state when URL changes
   useEffect(() => {
     setLocationSearch(searchParams.get("location") || "");
   }, [searchParams]);
@@ -62,7 +62,6 @@ export default function NavBar() {
   };
 
   const handleLocationSearch = (e) => {
-    // Search when Enter is pressed or search button is clicked
     if (e.type === "click" || e.key === "Enter") {
       e.preventDefault();
       if (locationSearch.trim()) {
@@ -76,22 +75,28 @@ export default function NavBar() {
   };
 
   return (
-    <nav className="bg-white shadow-xs">
+    <nav className="bg-card dark:bg-dark-surface shadow-md border-b border-gray-200 dark:border-gray-800">
       <div className="container mx-auto px-4 py-3 flex gap-4 items-center">
-        <Link to="/" className="font-bold text-2xl text-blue-500">
+        <Link
+          to="/"
+          className="font-bold text-2xl text-primary dark:text-primary"
+        >
           Bookify
         </Link>
         <div className="flex-1 max-w-2xl mx-4">
-          <div className="flex flex-1 items-center border border-gray-300 rounded-full shadow-sm hover:shadow-md transition-shadow duration-200">
+          <div className="flex flex-1 items-center border border-gray-300 dark:border-gray-700 rounded-full shadow-sm hover:shadow-md transition-shadow duration-200 bg-white dark:bg-gray-800">
             <div className="flex items-center flex-grow pl-4">
-              <FiSearch className="text-gray-500 mr-2" size={20} />
+              <FiSearch
+                className="text-gray-500 dark:text-gray-300 mr-2"
+                size={20}
+              />
               <input
                 type="text"
                 placeholder="Search events"
-                className="w-full py-2 pr-2 text-sm text-gray-700 focus:outline-none"
+                className="w-full py-2 pr-2 text-sm text-gray-700 dark:text-white bg-transparent focus:outline-none"
               />
             </div>
-            <div className="h-6 border-l border-gray-300 mx-2"></div>
+            <div className="h-6 border-l border-gray-300 dark:border-gray-600 mx-2"></div>
             <LocationSearch
               value={locationSearch}
               onChange={handleLocationChange}
@@ -99,7 +104,7 @@ export default function NavBar() {
             />
             <button
               type="button"
-              className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full m-1"
+              className="bg-primary hover:bg-primary-hover text-white p-2 rounded-full m-1"
               aria-label="Search"
               onClick={handleLocationSearch}
             >
@@ -110,14 +115,14 @@ export default function NavBar() {
         <div className="space-x-4 hidden md:flex items-center">
           <Link
             to="/"
-            className="text-gray-700 hover:text-blue-600 font-medium"
+            className="text-gray-700 dark:text-white hover:text-primary dark:hover:text-primary font-medium"
           >
-            create events
+            Create Events
           </Link>
           {isAuthenticated && user && (
             <Link
               to="/my-bookings"
-              className="text-gray-700 hover:text-blue-600 font-medium"
+              className="text-gray-700 dark:text-white hover:text-primary dark:hover:text-primary font-medium"
             >
               My Bookings
             </Link>
@@ -125,16 +130,17 @@ export default function NavBar() {
           {isAuthenticated && user && user.role === "ADMIN" && (
             <Link
               to="/admin"
-              className="text-gray-700 hover:text-blue-600 font-medium"
+              className="text-gray-700 dark:text-white hover:text-primary dark:hover:text-primary font-medium"
             >
               Admin Panel
             </Link>
           )}
+          <ThemeToggle />
           {isAuthenticated && user ? (
             <div className="relative">
               <div
                 ref={avatarRef}
-                className="w-9 h-9 flex items-center justify-center rounded-full bg-blue-500 text-white font-bold text-lg cursor-pointer"
+                className="w-9 h-9 flex items-center justify-center rounded-full bg-primary text-white font-bold text-lg cursor-pointer"
                 onClick={handleAvatarClick}
               >
                 {getInitials(user)}
@@ -142,19 +148,19 @@ export default function NavBar() {
               {showModal && (
                 <div
                   ref={dropdownRef}
-                  className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg py-3 z-50 border"
+                  className="absolute right-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-3 z-50 border dark:border-gray-700"
                 >
                   <div className="flex flex-col items-center px-4 pb-2">
-                    <div className="w-12 h-12 flex items-center justify-center rounded-full bg-blue-500 text-white font-bold text-2xl mb-2">
+                    <div className="w-12 h-12 flex items-center justify-center rounded-full bg-primary text-white font-bold text-2xl mb-2">
                       {getInitials(user)}
                     </div>
-                    <span className="font-semibold text-slate-700 mb-1">
+                    <span className="font-semibold text-gray-700 dark:text-gray-200 mb-1">
                       {user.fullName || user.name}
                     </span>
-                    <span className="text-xs text-gray-500 mb-2">
+                    <span className="text-xs text-gray-500 dark:text-gray-400 mb-2">
                       {user.email}
                     </span>
-                    <span className="text-xs font-medium bg-gray-100 px-2 py-1 rounded text-gray-600">
+                    <span className="text-xs font-medium bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-600 dark:text-gray-300">
                       {user.role || "USER"}
                     </span>
                   </div>
@@ -166,7 +172,7 @@ export default function NavBar() {
                   </button>
                   <button
                     onClick={handleCloseModal}
-                    className="w-11/12 mx-auto block bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded transition"
+                    className="w-11/12 mx-auto block bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-semibold py-2 px-4 rounded transition"
                   >
                     Cancel
                   </button>
@@ -174,8 +180,11 @@ export default function NavBar() {
               )}
             </div>
           ) : (
-            <Link to="/auth" className="hover:text-blue-500">
-              sign in
+            <Link
+              to="/auth"
+              className="text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-primary"
+            >
+              Sign In
             </Link>
           )}
         </div>
