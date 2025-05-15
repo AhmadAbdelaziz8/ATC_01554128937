@@ -1,4 +1,5 @@
 import prisma from "../config/prismaClient.js";
+import path from "path";
 
 // Create a new event
 export const createEvent = async (req, res) => {
@@ -6,13 +7,25 @@ export const createEvent = async (req, res) => {
     // extract event data from request body
     const { name, description, category, venue, imageUrl, date, price } =
       req.body;
+
+    // Set up image path - either from uploaded file or provided URL
+    let finalImageUrl = imageUrl;
+
+    // Check if we have an uploaded file
+    if (req.file) {
+      // Generate URL for the uploaded image
+      const baseUrl = `${req.protocol}://${req.get("host")}`;
+      const relativePath = `/uploads/${path.basename(req.file.path)}`;
+      finalImageUrl = `${baseUrl}${relativePath}`;
+    }
+
     // validate required fields
     if (
       !name ||
       !description ||
       !category ||
       !venue ||
-      !imageUrl ||
+      !finalImageUrl ||
       !date ||
       !price
     ) {
@@ -24,7 +37,7 @@ export const createEvent = async (req, res) => {
       description,
       category,
       venue,
-      imageUrl,
+      imageUrl: finalImageUrl,
       date: new Date(date),
       price: parseFloat(price),
     };
@@ -79,6 +92,14 @@ export const updateEvent = async (req, res) => {
 
     if (!updateData) {
       return res.status(400).json({ message: "No update data provided" });
+    }
+
+    // Check if we have an uploaded file
+    if (req.file) {
+      // Generate URL for the uploaded image
+      const baseUrl = `${req.protocol}://${req.get("host")}`;
+      const relativePath = `/uploads/${path.basename(req.file.path)}`;
+      updateData.imageUrl = `${baseUrl}${relativePath}`;
     }
 
     // convert date to object and price to number

@@ -12,6 +12,8 @@ const EventForm = ({ event, onSubmit, isSubmitting }) => {
     price: "",
     imageUrl: "",
   });
+  const [imageFile, setImageFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState("");
 
   // If event is provided (editing mode), populate form data
   useEffect(() => {
@@ -29,6 +31,10 @@ const EventForm = ({ event, onSubmit, isSubmitting }) => {
         price: event.price?.toString() || "",
         imageUrl: event.imageUrl || "",
       });
+
+      if (event.imageUrl) {
+        setPreviewUrl(event.imageUrl);
+      }
     }
   }, [event]);
 
@@ -37,9 +43,40 @@ const EventForm = ({ event, onSubmit, isSubmitting }) => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      // Create a preview URL
+      const fileUrl = URL.createObjectURL(file);
+      setPreviewUrl(fileUrl);
+      // Clear the imageUrl since we'll upload a file instead
+      setFormData({ ...formData, imageUrl: "" });
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    
+    // Create FormData object if we have an image file
+    if (imageFile) {
+      const submitData = new FormData();
+      
+      // Add all form fields to FormData
+      Object.keys(formData).forEach(key => {
+        if (key !== "imageUrl" || formData[key]) { // Only add imageUrl if it exists
+          submitData.append(key, formData[key]);
+        }
+      });
+      
+      // Add the image file
+      submitData.append("image", imageFile);
+      
+      onSubmit(submitData);
+    } else {
+      // No file upload, just submit the regular form data
+      onSubmit(formData);
+    }
   };
 
   return (
@@ -136,16 +173,43 @@ const EventForm = ({ event, onSubmit, isSubmitting }) => {
 
       <div>
         <label className="block text-sm font-medium text-gray-700">
-          Image URL
+          Image
         </label>
-        <Input
-          type="url"
-          name="imageUrl"
-          value={formData.imageUrl}
-          onChange={handleChange}
-          required
-          className="mt-1"
-        />
+        <div className="mt-1 space-y-2">
+          <Input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="mt-1"
+          />
+          
+          {!imageFile && (
+            <div className="mt-2">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Or provide an image URL
+              </label>
+              <Input
+                type="url"
+                name="imageUrl"
+                value={formData.imageUrl}
+                onChange={handleChange}
+                className="mt-1"
+                placeholder="https://example.com/image.jpg"
+              />
+            </div>
+          )}
+          
+          {previewUrl && (
+            <div className="mt-2">
+              <p className="text-sm font-medium text-gray-700 mb-1">Image Preview:</p>
+              <img 
+                src={previewUrl} 
+                alt="Preview" 
+                className="h-40 object-cover rounded-md border border-gray-300" 
+              />
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="flex justify-end">

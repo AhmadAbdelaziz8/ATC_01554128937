@@ -30,14 +30,9 @@ const AdminEventListPage = () => {
   };
 
   const handleDelete = async (eventId) => {
-    if (!window.confirm("Are you sure you want to delete this event?")) {
-      return;
-    }
-    
     try {
       await deleteEvent(eventId, token);
-      // Remove from UI without refetching
-      setEvents(events.filter(event => event.id !== eventId));
+      setEvents(events.filter((event) => event.id !== eventId));
     } catch (err) {
       setError(err.message || "Failed to delete event");
     }
@@ -55,7 +50,7 @@ const AdminEventListPage = () => {
     <div>
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-semibold">Manage Events</h2>
-        <Button 
+        <Button
           onClick={() => navigate("/admin/events/new")}
           className="bg-blue-600 hover:bg-blue-700 text-white"
         >
@@ -64,39 +59,61 @@ const AdminEventListPage = () => {
       </div>
 
       {events.length === 0 ? (
-        <p className="text-center p-8 text-gray-500">No events found. Create your first event!</p>
+        <p className="text-center p-8 text-gray-500">
+          No events found. Create your first event!
+        </p>
       ) : (
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Venue</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Name
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Date
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Venue
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Price
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Category
+                </th>
+                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {events.map((event) => (
                 <tr key={event.id}>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{event.name}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    {event.name}
+                  </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {new Date(event.date).toLocaleDateString()}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{event.venue}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${parseFloat(event.price).toFixed(2)}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{event.category}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {event.venue}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    ${parseFloat(event.price).toFixed(2)}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {event.category}
+                  </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <div className="flex justify-end space-x-2">
-                      <Link 
+                      <Link
                         to={`/admin/events/edit/${event.id}`}
                         className="text-blue-600 hover:text-blue-900"
                       >
                         <PencilIcon className="h-5 w-5" />
                       </Link>
-                      <button 
+                      <button
                         onClick={() => handleDelete(event.id)}
                         className="text-red-600 hover:text-red-900"
                       >
@@ -114,4 +131,4 @@ const AdminEventListPage = () => {
   );
 };
 
-export default AdminEventListPage; 
+export default AdminEventListPage;

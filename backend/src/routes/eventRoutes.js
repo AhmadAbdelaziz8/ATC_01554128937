@@ -7,6 +7,7 @@ import {
   deleteEvent,
 } from "../controllers/eventController.js";
 import { protect, authorize } from "../middleware/authMiddleware.js";
+import upload from "../middleware/uploadMiddleware.js";
 
 const router = express.Router();
 
@@ -15,9 +16,21 @@ router.get("/", getAllEvents);
 // get event by ID
 router.get("/:id", getEventById);
 // create a new event
-router.post("/", protect, authorize("ADMIN"), createEvent);
+router.post(
+  "/",
+  protect,
+  authorize("ADMIN"),
+  upload.single("image"),
+  createEvent
+);
 // update an event
-router.put("/:id", protect, authorize("ADMIN"), updateEvent);
+router.put(
+  "/:id",
+  protect,
+  authorize("ADMIN"),
+  upload.single("image"),
+  updateEvent
+);
 // delete an event
 router.delete("/:id", protect, authorize("ADMIN"), deleteEvent);
 

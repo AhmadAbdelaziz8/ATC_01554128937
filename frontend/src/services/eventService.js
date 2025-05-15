@@ -25,13 +25,22 @@ export async function getEventById(eventId) {
 
 // Create a new event (admin only)
 export async function createEvent(eventData, token) {
+  // Determine if eventData is FormData (has image file) or regular JSON
+  const isFormData = eventData instanceof FormData;
+
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
+  // Only add Content-Type for JSON data, browser will set it automatically for FormData
+  if (!isFormData) {
+    headers["Content-Type"] = "application/json";
+  }
+
   const response = await fetch(`${BASE_URL}/api/events`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(eventData),
+    headers,
+    body: isFormData ? eventData : JSON.stringify(eventData),
   });
 
   const data = await response.json();
@@ -45,13 +54,22 @@ export async function createEvent(eventData, token) {
 
 // Update an existing event (admin only)
 export async function updateEvent(eventId, eventData, token) {
+  // Determine if eventData is FormData (has image file) or regular JSON
+  const isFormData = eventData instanceof FormData;
+
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
+  // Only add Content-Type for JSON data, browser will set it automatically for FormData
+  if (!isFormData) {
+    headers["Content-Type"] = "application/json";
+  }
+
   const response = await fetch(`${BASE_URL}/api/events/${eventId}`, {
     method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(eventData),
+    headers,
+    body: isFormData ? eventData : JSON.stringify(eventData),
   });
 
   const data = await response.json();
