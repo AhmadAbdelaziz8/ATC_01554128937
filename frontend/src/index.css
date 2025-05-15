@@ -189,7 +189,6 @@ body {
   --sidebar-ring: oklch(0.556 0 0);
 }
 
-/* Dark mode gradient background */
 .dark body {
   background: linear-gradient(to bottom, #0f172a, #1e3a8a);
 }
