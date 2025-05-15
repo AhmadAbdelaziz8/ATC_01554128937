@@ -15,7 +15,7 @@ const AdminEventListPage = () => {
   const [pagination, setPagination] = useState({
     total: 0,
     page: 1,
-    limit: 10, // Changed from 20 to 10 events per page
+    limit: 10, 
     totalPages: 0,
   });
   const [isLoading, setIsLoading] = useState(true);

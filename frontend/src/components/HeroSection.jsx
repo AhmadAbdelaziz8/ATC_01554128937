@@ -22,11 +22,10 @@ export default function HeroSection() {
             <CarouselItem key={item.id}>
               <div className="p-1">
                 <div
-                  className="relative w-full h-[350px] bg-cover bg-center text-white rounded-lg overflow-hidden" // Added rounded-lg and overflow-hidden
+                  className="relative w-full h-[350px] bg-cover bg-center text-white rounded-lg overflow-hidden" 
                   style={{ backgroundImage: `url(${item.imageUrl})` }}
                 >
                   <div className="absolute inset-0 bg-black opacity-40"></div>
-
                   {/* Content */}
                   <div className="relative h-full flex flex-col items-center justify-center text-center p-6 z-10">
                     {item.supertitle && (
@@ -41,7 +40,6 @@ export default function HeroSection() {
                       {item.subtitle}
                     </p>
                     <Button
-                      variant="secondary"
                       size="lg"
                       className="transform hover:scale-105"
                     >

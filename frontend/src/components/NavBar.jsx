@@ -84,6 +84,7 @@ export default function NavBar() {
           Bookify
         </Link>
         <div className="flex-1 max-w-2xl mx-4">
+        {/* {search Bar} */}
           <div className="flex flex-1 items-center border border-gray-300 dark:border-gray-700 rounded-full shadow-sm hover:shadow-md transition-shadow duration-200 bg-white dark:bg-gray-800">
             <div className="flex items-center flex-grow pl-4">
               <FiSearch
@@ -112,13 +113,8 @@ export default function NavBar() {
             </button>
           </div>
         </div>
+          {/* {links} */}
         <div className="space-x-4 hidden md:flex items-center">
-          <Link
-            to="/"
-            className="text-gray-700 dark:text-white hover:text-primary dark:hover:text-primary font-medium"
-          >
-            Create Events
-          </Link>
           {isAuthenticated && user && (
             <Link
               to="/my-bookings"

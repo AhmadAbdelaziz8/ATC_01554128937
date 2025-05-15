@@ -6,7 +6,6 @@ import { useSearchParams, Navigate } from "react-router-dom";
 import { getAllEvents } from "../services/eventService";
 import { useAuth } from "../AuthContext";
 
-// Loading Spinner Component
 function LoadingSpinner() {
   return (
     <div className="flex justify-center items-center h-64">
@@ -15,7 +14,6 @@ function LoadingSpinner() {
   );
 }
 
-// Error Message Component
 function ErrorMessage({ message }) {
   return (
     <p className="text-center text-red-600 dark:text-red-400">
@@ -24,7 +22,6 @@ function ErrorMessage({ message }) {
   );
 }
 
-// Event Grid Component
 function EventGrid({ events }) {
   if (!events.length) {
     return (
@@ -50,24 +47,12 @@ export default function HomePage() {
   const [searchParams] = useSearchParams();
   const locationParam = searchParams.get("location");
 
-  // Redirect to search page if location is provided
-  if (locationParam) {
-    return (
-      <Navigate
-        to={`/search?location=${encodeURIComponent(locationParam)}`}
-        replace
-      />
-    );
-  }
-
-  // Fetch events whenever auth status changes
   useEffect(() => {
     const fetchEvents = async () => {
       setLoading(true);
       try {
-        // Pass token if user is authenticated to get booking status
         const data = await getAllEvents(isAuthenticated ? token : null);
-        setEvents(data.events.slice(0, 4)); // Just display the first 4 events
+        setEvents(data.events.slice(0, 4));
         setError(null);
       } catch (error) {
         setError(error);
@@ -78,12 +63,19 @@ export default function HomePage() {
     fetchEvents();
   }, [token, isAuthenticated]);
 
+  if (locationParam) {
+    return (
+      <Navigate
+        to={`/search?location=${encodeURIComponent(locationParam)}`}
+        replace
+      />
+    );
+  }
+
   return (
     <div>
       <HeroSection />
       <CategoryLinks />
-
-      {/* Upcoming Events Section */}
       <div className="container mx-auto px-4 py-8 sm:py-12">
         <h2 className="text-2xl sm:text-3xl font-semibold text-center mb-8 sm:mb-10 text-foreground dark:text-dark-text">
           Upcoming Events

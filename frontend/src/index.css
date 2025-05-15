@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@tailwind utilities;
 
 @custom-variant dark (&:is(.dark *));
 
@@ -192,7 +191,7 @@ body {
 .dark body {
   background: linear-gradient(to bottom, #0f172a, #1e3a8a);
 }
-
+/* 
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -200,4 +199,4 @@ body {
   body {
     @apply bg-background text-foreground transition-colors duration-200;
   }
-}
+} */
