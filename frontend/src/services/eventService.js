@@ -1,7 +1,16 @@
 const BASE_URL = import.meta.env.VITE_API_URL;
 // Get all events
-export async function getAllEvents() {
-  const response = await fetch(`${BASE_URL}/api/events`);
+export async function getAllEvents(token = null) {
+  const headers = {};
+
+  // Add authorization header if token is provided
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  const response = await fetch(`${BASE_URL}/api/events`, {
+    headers,
+  });
   const data = await response.json();
 
   if (!response.ok) {
@@ -12,8 +21,17 @@ export async function getAllEvents() {
 }
 
 // Get a single event by ID
-export async function getEventById(eventId) {
-  const response = await fetch(`${BASE_URL}/api/events/${eventId}`);
+export async function getEventById(eventId, token = null) {
+  const headers = {};
+
+  // Add authorization header if token is provided
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  const response = await fetch(`${BASE_URL}/api/events/${eventId}`, {
+    headers,
+  });
   const data = await response.json();
 
   if (!response.ok) {

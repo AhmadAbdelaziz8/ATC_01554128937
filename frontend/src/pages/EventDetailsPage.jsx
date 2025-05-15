@@ -30,6 +30,7 @@ export default function EventDetailsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [bookingInProgress, setBookingInProgress] = useState(false);
   const [bookingError, setBookingError] = useState(null);
+  const [imageError, setImageError] = useState(false);
   const { token, isAuthenticated } = useAuth();
 
   useEffect(() => {
@@ -66,6 +67,10 @@ export default function EventDetailsPage() {
     }
   };
 
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
   if (isLoading) {
     return (
       <div className="text-center py-10">
@@ -75,6 +80,8 @@ export default function EventDetailsPage() {
   }
 
   const eventPrice = parseInt(event.price).toFixed(2);
+  const fallbackImageUrl =
+    "https://via.placeholder.com/800x400?text=Event+Image";
 
   if (!event) {
     return (
@@ -101,11 +108,11 @@ export default function EventDetailsPage() {
         {/* Event Image */}
         <img
           src={
-            event.imageUrl ||
-            "https://via.placeholder.com/800x400?text=Event+Image"
+            imageError ? fallbackImageUrl : event.imageUrl || fallbackImageUrl
           }
           alt={event.name}
           className="w-full h-64 sm:h-80 md:h-96 object-cover"
+          onError={handleImageError}
         />
 
         <div className="p-6 md:p-8">

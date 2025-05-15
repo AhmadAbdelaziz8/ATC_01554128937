@@ -3,6 +3,7 @@ import CategoryLinks from "@/components/CategoryLinks";
 import EventCard from "@/components/EventCard/EventCard";
 import { useState, useEffect } from "react";
 import { getAllEvents } from "../services/eventService";
+import { useAuth } from "../AuthContext";
 
 // Loading Spinner Component
 function LoadingSpinner() {
@@ -40,12 +41,14 @@ export default function HomePage() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { token, isAuthenticated } = useAuth();
 
   // Fetch events on mount
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const events = await getAllEvents();
+        // Pass token if user is authenticated to get booking status
+        const events = await getAllEvents(isAuthenticated ? token : null);
         setEvents(events);
         setLoading(false);
       } catch (error) {
@@ -54,7 +57,7 @@ export default function HomePage() {
       }
     };
     fetchEvents();
-  }, []);
+  }, [token, isAuthenticated]);
 
   // Only pass the first 4 events to EventGrid
   const firstFourEvents = events.slice(0, 4);

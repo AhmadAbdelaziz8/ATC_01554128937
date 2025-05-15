@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { CalendarDays, MapPin, Ticket } from "lucide-react";
+import { useState } from "react";
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
@@ -11,17 +12,27 @@ const formatDate = (dateString) => {
 };
 
 export default function EventCard({ event }) {
+  const [imageError, setImageError] = useState(false);
+
   if (!event) return null;
   const eventPrice = parseInt(event.price).toFixed(2);
+
+  const fallbackImageUrl =
+    "https://via.placeholder.com/400x250?text=Event+Image";
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col group transition-all duration-300 hover:shadow-xl">
       <Link to={`/events/${event.id}`} className="block">
         <img
           src={
-            event.imageUrl ||
-            "https://via.placeholder.com/400x250?text=Event+Image"
+            imageError ? fallbackImageUrl : event.imageUrl || fallbackImageUrl
           }
           alt={event.name}
+          onError={handleImageError}
           className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
         />
       </Link>
