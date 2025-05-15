@@ -10,7 +10,7 @@ export const createEvent = async (req, res) => {
 
     // Set up image path - either from uploaded file or provided URL
     let finalImageUrl = imageUrl;
-    
+
     // Check if we have an uploaded file
     if (req.file) {
       // Generate URL for the uploaded image
@@ -18,8 +18,6 @@ export const createEvent = async (req, res) => {
       const filename = path.basename(req.file.path);
       const relativePath = `/uploads/${filename}`;
       finalImageUrl = `${baseUrl}${relativePath}`;
-      
-
     }
 
     // validate required fields
@@ -61,32 +59,49 @@ export const getAllEvents = async (req, res) => {
   try {
     // Check if user is authenticated (req.user will be set by the auth middleware if token provided)
     const userId = req.user?.id;
-    
-    // Fetch all events from database
-    const events = await prisma.event.findMany({ 
-      orderBy: { date: "asc" } 
+
+    // Get location query parameter for filtering
+    const { location } = req.query;
+
+    // Set up filter conditions
+    const whereCondition = {};
+
+    // Add location filter if provided
+    if (location) {
+      whereCondition.venue = {
+        contains: location,
+        mode: "insensitive", // Case-insensitive search
+      };
+    }
+
+    // Fetch events from database with filters
+    const events = await prisma.event.findMany({
+      where: whereCondition,
+      orderBy: { date: "asc" },
     });
-    
+
     // If user is authenticated, check which events they've booked
     if (userId) {
       // Get all bookings for this user
       const userBookings = await prisma.booking.findMany({
         where: { userId },
-        select: { eventId: true }
+        select: { eventId: true },
       });
-      
+
       // Create a set of booked event IDs for faster lookup
-      const bookedEventIds = new Set(userBookings.map(booking => booking.eventId));
-      
+      const bookedEventIds = new Set(
+        userBookings.map((booking) => booking.eventId)
+      );
+
       // Add isBooked flag to each event
-      const eventsWithBookingStatus = events.map(event => ({
+      const eventsWithBookingStatus = events.map((event) => ({
         ...event,
-        isBooked: bookedEventIds.has(event.id)
+        isBooked: bookedEventIds.has(event.id),
       }));
-      
+
       return res.status(200).json(eventsWithBookingStatus);
     }
-    
+
     // If user is not authenticated, return events without booking info
     res.status(200).json(events);
   } catch (error) {
@@ -100,32 +115,32 @@ export const getEventById = async (req, res) => {
   try {
     const eventId = req.params.id;
     const userId = req.user?.id;
-    
+
     // fetch event by ID from database
     const event = await prisma.event.findUnique({
       where: { id: eventId },
     });
-    
+
     // check if event exists
     if (!event) {
       return res.status(404).json({ message: "Event not found" });
     }
-    
+
     // If user is authenticated, check if they've booked this event
     if (userId) {
       const booking = await prisma.booking.findFirst({
         where: {
           userId,
-          eventId
-        }
+          eventId,
+        },
       });
-      
+
       return res.status(200).json({
         ...event,
-        isBooked: !!booking
+        isBooked: !!booking,
       });
     }
-    
+
     res.status(200).json(event);
   } catch (error) {
     console.error("Error fetching event by ID:", error);
@@ -150,12 +165,12 @@ export const updateEvent = async (req, res) => {
       const filename = path.basename(req.file.path);
       const relativePath = `/uploads/${filename}`;
       updateData.imageUrl = `${baseUrl}${relativePath}`;
-      
-      console.log('File uploaded (update):', {
+
+      console.log("File uploaded (update):", {
         originalName: req.file.originalname,
         savedAs: filename,
         fullPath: req.file.path,
-        finalUrl: updateData.imageUrl
+        finalUrl: updateData.imageUrl,
       });
     }
 

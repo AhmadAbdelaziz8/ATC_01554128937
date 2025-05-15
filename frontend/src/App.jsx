@@ -6,6 +6,7 @@ import EventDetailsPage from "./pages/EventDetailsPage";
 import BookConfirmationPage from "./pages/BookConfirmationPage";
 import AuthPage from "./pages/AuthPage";
 import MyBookingsPage from "./pages/MyBookingsPage";
+import SearchResultsPage from "./pages/SearchResultsPage";
 import ProtectedAdminRoute from "./components/routes/ProtectedAdminRoute";
 import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
 import AdminEventListPage from "./pages/admin/AdminEventListPage";
@@ -34,6 +35,7 @@ function App() {
           <Routes>
             {/* Public and User Routes */}
             <Route path="/" element={<HomePage />} />
+            <Route path="/search" element={<SearchResultsPage />} />
             <Route path="/events/:eventId" element={<EventDetailsPage />} />
             <Route
               path="/booking-confirmation/:eventId"

@@ -2,6 +2,7 @@ import HeroSection from "@/components/HeroSection";
 import CategoryLinks from "@/components/CategoryLinks";
 import EventCard from "@/components/EventCard/EventCard";
 import { useState, useEffect } from "react";
+import { useSearchParams, Navigate } from "react-router-dom";
 import { getAllEvents } from "../services/eventService";
 import { useAuth } from "../AuthContext";
 
@@ -42,17 +43,31 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { token, isAuthenticated } = useAuth();
+  const [searchParams] = useSearchParams();
+  const locationParam = searchParams.get("location");
 
-  // Fetch events on mount
+  // Redirect to search page if location is provided
+  if (locationParam) {
+    return (
+      <Navigate
+        to={`/search?location=${encodeURIComponent(locationParam)}`}
+        replace
+      />
+    );
+  }
+
+  // Fetch events whenever auth status changes
   useEffect(() => {
     const fetchEvents = async () => {
+      setLoading(true);
       try {
         // Pass token if user is authenticated to get booking status
         const events = await getAllEvents(isAuthenticated ? token : null);
         setEvents(events);
-        setLoading(false);
+        setError(null);
       } catch (error) {
         setError(error);
+      } finally {
         setLoading(false);
       }
     };

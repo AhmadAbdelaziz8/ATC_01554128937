@@ -1,13 +1,24 @@
-import { Link } from "react-router-dom";
-import { FiSearch, FiMapPin } from "react-icons/fi";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { FiSearch } from "react-icons/fi";
 import { useAuth } from "../AuthContext";
 import { useState, useRef, useEffect } from "react";
+import LocationSearch from "./ui/LocationSearch";
 
 export default function NavBar() {
   const { user, isAuthenticated, logout } = useAuth();
   const [showModal, setShowModal] = useState(false);
+  const [searchParams] = useSearchParams();
+  const [locationSearch, setLocationSearch] = useState(
+    searchParams.get("location") || ""
+  );
+  const navigate = useNavigate();
   const avatarRef = useRef(null);
   const dropdownRef = useRef(null);
+
+  // Update locationSearch state when URL changes
+  useEffect(() => {
+    setLocationSearch(searchParams.get("location") || "");
+  }, [searchParams]);
 
   const getInitials = (user) => {
     const fullName = user?.fullName || user?.name || "";
@@ -46,6 +57,24 @@ export default function NavBar() {
     setShowModal(false);
   };
 
+  const handleLocationChange = (value) => {
+    setLocationSearch(value);
+  };
+
+  const handleLocationSearch = (e) => {
+    // Search when Enter is pressed or search button is clicked
+    if (e.type === "click" || e.key === "Enter") {
+      e.preventDefault();
+      if (locationSearch.trim()) {
+        navigate(
+          `/search?location=${encodeURIComponent(locationSearch.trim())}`
+        );
+      } else {
+        navigate("/search");
+      }
+    }
+  };
+
   return (
     <nav className="bg-white shadow-xs">
       <div className="container mx-auto px-4 py-3 flex gap-4 items-center">
@@ -63,18 +92,16 @@ export default function NavBar() {
               />
             </div>
             <div className="h-6 border-l border-gray-300 mx-2"></div>
-            <div className="flex items-center flex-grow pl-2">
-              <FiMapPin className="text-gray-500 mr-2" size={20} />
-              <input
-                type="text"
-                placeholder="Location"
-                className="w-full py-2 pr-4 text-sm text-gray-700 focus:outline-none"
-              />
-            </div>
+            <LocationSearch
+              value={locationSearch}
+              onChange={handleLocationChange}
+              onSearch={handleLocationSearch}
+            />
             <button
               type="button"
               className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full m-1"
               aria-label="Search"
+              onClick={handleLocationSearch}
             >
               <FiSearch size={20} />
             </button>

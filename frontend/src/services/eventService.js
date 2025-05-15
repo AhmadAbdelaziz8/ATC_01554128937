@@ -1,6 +1,6 @@
 const BASE_URL = import.meta.env.VITE_API_URL;
 // Get all events
-export async function getAllEvents(token = null) {
+export async function getAllEvents(token = null, location = null) {
   const headers = {};
 
   // Add authorization header if token is provided
@@ -8,7 +8,13 @@ export async function getAllEvents(token = null) {
     headers.Authorization = `Bearer ${token}`;
   }
 
-  const response = await fetch(`${BASE_URL}/api/events`, {
+  // Build URL with query parameters if location is provided
+  let url = `${BASE_URL}/api/events`;
+  if (location && location.trim()) {
+    url += `?location=${encodeURIComponent(location.trim())}`;
+  }
+
+  const response = await fetch(url, {
     headers,
   });
   const data = await response.json();

@@ -36,7 +36,7 @@ export default function EventDetailsPage() {
   useEffect(() => {
     const fetchEvent = async () => {
       try {
-        const foundEvent = await getEventById(eventId);
+        const foundEvent = await getEventById(eventId, token);
         setEvent(foundEvent);
         setIsLoading(false);
       } catch (error) {
@@ -45,11 +45,16 @@ export default function EventDetailsPage() {
       }
     };
     fetchEvent();
-  }, [eventId]);
+  }, [eventId, token]);
 
   const handleBookNow = async () => {
     if (!isAuthenticated) {
       navigate("/auth");
+      return;
+    }
+
+    if (event.isBooked) {
+      navigate("/my-bookings");
       return;
     }
 
@@ -61,6 +66,12 @@ export default function EventDetailsPage() {
       navigate(`/booking-confirmation/${event.id}`);
     } catch (error) {
       console.error("Booking failed:", error);
+
+      if (error.message?.includes("already booked")) {
+        navigate("/my-bookings");
+        return;
+      }
+
       setBookingError(error.message);
     } finally {
       setBookingInProgress(false);
@@ -169,32 +180,46 @@ export default function EventDetailsPage() {
               <div className="text-red-500 mb-4">{bookingError}</div>
             )}
 
-            <button
-              onClick={handleBookNow}
-              disabled={bookingInProgress}
-              className={`
-                bg-orange-500 hover:bg-orange-600 text-white font-bold 
-                py-3 px-10 rounded-lg text-lg transition duration-300
-                ${
-                  bookingInProgress
-                    ? "opacity-75 cursor-not-allowed"
-                    : "hover:scale-105"
-                }
-                focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50
-              `}
-            >
-              {bookingInProgress ? (
-                <>
-                  <span className="inline-block w-5 h-5 mr-2 border-t-2 border-b-2 border-white rounded-full animate-spin"></span>
-                  Booking...
-                </>
-              ) : (
-                <>
-                  <Ticket className="w-5 h-5 mr-2 inline-block" />
-                  Book Now (1 Ticket)
-                </>
-              )}
-            </button>
+            {event.isBooked ? (
+              <div className="mb-4">
+                <div className="text-green-600 font-medium mb-2">
+                  You've already booked this event!
+                </div>
+                <Link
+                  to="/my-bookings"
+                  className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-10 rounded-lg text-lg transition duration-300 inline-block"
+                >
+                  View My Bookings
+                </Link>
+              </div>
+            ) : (
+              <button
+                onClick={handleBookNow}
+                disabled={bookingInProgress}
+                className={`
+                  bg-orange-500 hover:bg-orange-600 text-white font-bold 
+                  py-3 px-10 rounded-lg text-lg transition duration-300
+                  ${
+                    bookingInProgress
+                      ? "opacity-75 cursor-not-allowed"
+                      : "hover:scale-105"
+                  }
+                  focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50
+                `}
+              >
+                {bookingInProgress ? (
+                  <>
+                    <span className="inline-block w-5 h-5 mr-2 border-t-2 border-b-2 border-white rounded-full animate-spin"></span>
+                    Booking...
+                  </>
+                ) : (
+                  <>
+                    <Ticket className="w-5 h-5 mr-2 inline-block" />
+                    Book Now (1 Ticket)
+                  </>
+                )}
+              </button>
+            )}
 
             {!isAuthenticated && (
               <div className="mt-3 text-sm text-gray-600">
