@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import categories from "../assets/mock/categories-data";
+
 export default function CategoryLinks() {
   return (
     <div className="py-8 sm:py-12 bg-slate-50">
-      
       <div className="container mx-auto px-4">
         <h2 className="text-2xl sm:text-3xl font-semibold text-center mb-8 text-slate-800">
           Browse by Category
@@ -11,10 +11,12 @@ export default function CategoryLinks() {
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-4 md:gap-6">
           {categories.map((category) => {
             const IconComponent = category.icon;
+            const categorySlug = category.link.split("/").pop();
+
             return (
               <Link
                 key={category.name}
-                to={category.link}
+                to={`/category/${categorySlug}`}
                 className="flex flex-col items-center p-4 rounded-lg group transition-transform duration-200 ease-in-out hover:scale-105"
               >
                 <div

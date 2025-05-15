@@ -4,7 +4,8 @@ export async function getAllEvents(
   token = null,
   location = null,
   page = 1,
-  limit = 8
+  limit = 8,
+  category = null
 ) {
   const headers = {};
 
@@ -19,6 +20,11 @@ export async function getAllEvents(
   // Add location parameter if provided
   if (location && location.trim()) {
     params.append("location", location.trim());
+  }
+
+  // Add category parameter if provided
+  if (category && category.trim()) {
+    params.append("category", category.trim());
   }
 
   // Add pagination parameters

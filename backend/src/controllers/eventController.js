@@ -61,7 +61,7 @@ export const getAllEvents = async (req, res) => {
     const userId = req.user?.id;
 
     // Get query parameters
-    const { location, page = 1, limit = 8 } = req.query;
+    const { location, category, page = 1, limit = 8 } = req.query;
 
     // Convert page and limit to numbers
     const pageNum = parseInt(page, 10);
@@ -85,6 +85,14 @@ export const getAllEvents = async (req, res) => {
     if (location) {
       whereCondition.venue = {
         contains: location,
+        mode: "insensitive", // Case-insensitive search
+      };
+    }
+
+    // Add category filter if provided
+    if (category) {
+      whereCondition.category = {
+        contains: category,
         mode: "insensitive", // Case-insensitive search
       };
     }
