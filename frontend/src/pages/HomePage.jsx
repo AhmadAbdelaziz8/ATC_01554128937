@@ -62,8 +62,8 @@ export default function HomePage() {
       setLoading(true);
       try {
         // Pass token if user is authenticated to get booking status
-        const events = await getAllEvents(isAuthenticated ? token : null);
-        setEvents(events);
+        const data = await getAllEvents(isAuthenticated ? token : null);
+        setEvents(data.events.slice(0, 4)); // Just display the first 4 events
         setError(null);
       } catch (error) {
         setError(error);
@@ -73,9 +73,6 @@ export default function HomePage() {
     };
     fetchEvents();
   }, [token, isAuthenticated]);
-
-  // Only pass the first 4 events to EventGrid
-  const firstFourEvents = events.slice(0, 4);
 
   return (
     <div className="text-3xl font-bold">
@@ -92,7 +89,7 @@ export default function HomePage() {
         ) : error ? (
           <ErrorMessage message={error.message} />
         ) : (
-          <EventGrid events={firstFourEvents} />
+          <EventGrid events={events} />
         )}
       </div>
     </div>

@@ -54,14 +54,29 @@ export const createEvent = async (req, res) => {
   }
 };
 
-// Get all events
+// Get all events with pagination
 export const getAllEvents = async (req, res) => {
   try {
     // Check if user is authenticated (req.user will be set by the auth middleware if token provided)
     const userId = req.user?.id;
 
-    // Get location query parameter for filtering
-    const { location } = req.query;
+    // Get query parameters
+    const { location, page = 1, limit = 8 } = req.query;
+
+    // Convert page and limit to numbers
+    const pageNum = parseInt(page, 10);
+    const limitNum = parseInt(limit, 10);
+
+    // Validate pagination parameters
+    if (isNaN(pageNum) || isNaN(limitNum) || pageNum < 1 || limitNum < 1) {
+      return res.status(400).json({
+        message:
+          "Invalid pagination parameters. Page and limit must be positive numbers.",
+      });
+    }
+
+    // Calculate skip value for pagination
+    const skip = (pageNum - 1) * limitNum;
 
     // Set up filter conditions
     const whereCondition = {};
@@ -74,10 +89,20 @@ export const getAllEvents = async (req, res) => {
       };
     }
 
-    // Fetch events from database with filters
+    // Get total count for pagination
+    const totalEvents = await prisma.event.count({
+      where: whereCondition,
+    });
+
+    // Calculate total pages
+    const totalPages = Math.ceil(totalEvents / limitNum);
+
+    // Fetch paginated events from database with filters
     const events = await prisma.event.findMany({
       where: whereCondition,
       orderBy: { date: "asc" },
+      skip,
+      take: limitNum,
     });
 
     // If user is authenticated, check which events they've booked
@@ -99,11 +124,27 @@ export const getAllEvents = async (req, res) => {
         isBooked: bookedEventIds.has(event.id),
       }));
 
-      return res.status(200).json(eventsWithBookingStatus);
+      return res.status(200).json({
+        events: eventsWithBookingStatus,
+        pagination: {
+          total: totalEvents,
+          page: pageNum,
+          limit: limitNum,
+          totalPages,
+        },
+      });
     }
 
     // If user is not authenticated, return events without booking info
-    res.status(200).json(events);
+    res.status(200).json({
+      events,
+      pagination: {
+        total: totalEvents,
+        page: pageNum,
+        limit: limitNum,
+        totalPages,
+      },
+    });
   } catch (error) {
     console.error("Error fetching events:", error);
     res.status(500).json({ message: "Error fetching events" });

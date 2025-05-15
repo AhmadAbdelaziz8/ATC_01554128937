@@ -1,6 +1,11 @@
 const BASE_URL = import.meta.env.VITE_API_URL;
-// Get all events
-export async function getAllEvents(token = null, location = null) {
+// Get all events with pagination
+export async function getAllEvents(
+  token = null,
+  location = null,
+  page = 1,
+  limit = 8
+) {
   const headers = {};
 
   // Add authorization header if token is provided
@@ -8,11 +13,20 @@ export async function getAllEvents(token = null, location = null) {
     headers.Authorization = `Bearer ${token}`;
   }
 
-  // Build URL with query parameters if location is provided
-  let url = `${BASE_URL}/api/events`;
+  // Build URL with query parameters
+  const params = new URLSearchParams();
+
+  // Add location parameter if provided
   if (location && location.trim()) {
-    url += `?location=${encodeURIComponent(location.trim())}`;
+    params.append("location", location.trim());
   }
+
+  // Add pagination parameters
+  params.append("page", page.toString());
+  params.append("limit", limit.toString());
+
+  // Build the final URL
+  const url = `${BASE_URL}/api/events?${params.toString()}`;
 
   const response = await fetch(url, {
     headers,
