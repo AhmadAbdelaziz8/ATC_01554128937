@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { CalendarDays, MapPin } from "lucide-react";
 import { useState } from "react";
-import { Card, CardContent, CardFooter } from "../ui/Card";
-import { LinkButton } from "../ui/Button";
+import { Card, CardContent, CardFooter } from "../ui/card";
+import { LinkButton } from "../ui/button";
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
