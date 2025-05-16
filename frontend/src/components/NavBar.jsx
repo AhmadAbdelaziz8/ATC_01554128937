@@ -76,49 +76,52 @@ export default function NavBar() {
 
   return (
     <nav className="bg-card dark:bg-dark-surface shadow-md border-b border-gray-200 dark:border-gray-800">
-      <div className="container mx-auto px-4 py-3 flex gap-4 items-center">
-        <Link
-          to="/"
-          className="font-bold text-2xl text-primary dark:text-primary"
-        >
-          Bookify
-        </Link>
-        <div className="flex-1 max-w-2xl mx-4">
-        {/* {search Bar} */}
-          <div className="flex flex-1 items-center border border-gray-300 dark:border-gray-700 rounded-full shadow-sm hover:shadow-md transition-shadow duration-200 bg-white dark:bg-gray-800">
-            <div className="flex items-center flex-grow pl-4">
-              <FiSearch
-                className="text-gray-500 dark:text-gray-300 mr-2"
-                size={20}
+      <div className="container mx-auto px-4 py-3 flex justify-between items-center">
+        <div className="flex items-center flex-1">
+          <Link
+            to="/"
+            className="font-bold text-2xl text-primary dark:text-primary mr-4"
+          >
+            Bookify
+          </Link>
+          <div className="flex-1 max-w-2xl">
+            {/* {search Bar} */}
+            <div className="flex flex-1 items-center border border-gray-300 dark:border-gray-700 rounded-full shadow-sm hover:shadow-md transition-shadow duration-200 bg-white dark:bg-gray-800">
+              <div className="flex items-center flex-grow pl-4">
+                <FiSearch
+                  className="text-gray-500 dark:text-gray-300 mr-2"
+                  size={20}
+                />
+                <input
+                  type="text"
+                  placeholder="Search events"
+                  className="w-full py-2 pr-2 text-sm text-gray-700 dark:text-white bg-transparent focus:outline-none"
+                />
+              </div>
+              <div className="h-6 border-l border-gray-300 dark:border-gray-600 mx-2"></div>
+              <LocationSearch
+                value={locationSearch}
+                onChange={handleLocationChange}
+                onSearch={handleLocationSearch}
               />
-              <input
-                type="text"
-                placeholder="Search events"
-                className="w-full py-2 pr-2 text-sm text-gray-700 dark:text-white bg-transparent focus:outline-none"
-              />
+              <button
+                type="button"
+                className="bg-primary hover:bg-primary-hover text-white p-2 rounded-full m-1"
+                aria-label="Search"
+                onClick={handleLocationSearch}
+              >
+                <FiSearch size={20} />
+              </button>
             </div>
-            <div className="h-6 border-l border-gray-300 dark:border-gray-600 mx-2"></div>
-            <LocationSearch
-              value={locationSearch}
-              onChange={handleLocationChange}
-              onSearch={handleLocationSearch}
-            />
-            <button
-              type="button"
-              className="bg-primary hover:bg-primary-hover text-white p-2 rounded-full m-1"
-              aria-label="Search"
-              onClick={handleLocationSearch}
-            >
-              <FiSearch size={20} />
-            </button>
           </div>
         </div>
-          {/* {links} */}
-        <div className="space-x-4 hidden md:flex items-center">
+
+        {/* {links} */}
+        <div className="flex items-center space-x-4 ml-4">
           {isAuthenticated && user && (
             <Link
               to="/my-bookings"
-              className="text-gray-700 dark:text-white hover:text-primary dark:hover:text-primary font-medium"
+              className="text-gray-700 dark:text-white hover:text-primary dark:hover:text-primary font-medium whitespace-nowrap"
             >
               My Bookings
             </Link>
@@ -126,7 +129,7 @@ export default function NavBar() {
           {isAuthenticated && user && user.role === "ADMIN" && (
             <Link
               to="/admin"
-              className="text-gray-700 dark:text-white hover:text-primary dark:hover:text-primary font-medium"
+              className="text-gray-700 dark:text-white hover:text-primary dark:hover:text-primary font-medium whitespace-nowrap"
             >
               Admin Panel
             </Link>
@@ -178,7 +181,7 @@ export default function NavBar() {
           ) : (
             <Link
               to="/auth"
-              className="text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-primary"
+              className="text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-primary whitespace-nowrap"
             >
               Sign In
             </Link>
