@@ -6,7 +6,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import heroItems from "@/assets/mock/carousel-data";
-import { Button } from "./ui/Button";
+import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
 
 export default function HeroSection() {
