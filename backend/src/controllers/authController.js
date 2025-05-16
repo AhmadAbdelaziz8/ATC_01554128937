@@ -3,10 +3,9 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 const prisma = new PrismaClient();
-// generate JWT
 const generateToken = (userId, userRole) => {
   const secret = process.env.JWT_SECRET_KEY;
-  const expiresIn = process.env.JWT_EXPIRES_IN || "1d"; // Default to 1 day
+  const expiresIn = process.env.JWT_EXPIRES_IN || "1d"; 
 
   if (!secret) {
     throw new Error(
@@ -15,7 +14,7 @@ const generateToken = (userId, userRole) => {
   }
 
   return jwt.sign(
-    { id: userId, role: userRole }, // Payload: include user ID and role
+    { id: userId, role: userRole }, 
     secret,
     { expiresIn: expiresIn }
   );
@@ -39,18 +38,17 @@ export const register = async (req, res) => {
   try {
     //Check if user exists
     const existingUser = await prisma.user.findUnique({
-      where: { email: email.toLowerCase() }, // Store emails consistently (lowercase)
+      where: { email: email.toLowerCase() }, 
     });
 
     if (existingUser) {
-      return res.status(409).json({ message: "Email already in use." }); // 409 Conflict
+      return res.status(409).json({ message: "Email already in use." }); 
     }
 
     // create password hash and user
-    const salt = await bcrypt.genSalt(10); // Generate salt (10 rounds is generally good)
+    const salt = await bcrypt.genSalt(10); 
     const passwordHash = await bcrypt.hash(password, salt);
 
-    // Determine role based on isRequestingAdminRole flag
     const role = isRequestingAdminRole ? "ADMIN" : "USER";
 
     const user = await prisma.user.create({

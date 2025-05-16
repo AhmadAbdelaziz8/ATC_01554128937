@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import { createEvent } from "../../services/eventService";
 import EventForm from "../../components/EventCard/EventForm";
 
@@ -25,10 +25,15 @@ const CreateEventPage = () => {
 
   return (
     <div>
-      <h2 className="text-xl font-semibold mb-6 dark:text-white">Create New Event</h2>
+      <h2 className="text-xl font-semibold mb-6 dark:text-white">
+        Create New Event
+      </h2>
 
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6 dark:bg-red-900/20 dark:border-red-800 dark:text-red-400">
+        <div
+          className="bg-red-50 border border-red-200 
+        text-red-700 px-4 py-3 rounded mb-6 dark:bg-red-900/20 dark:border-red-800 dark:text-red-400"
+        >
           {error}
         </div>
       )}

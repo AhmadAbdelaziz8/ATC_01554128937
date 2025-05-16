@@ -4,7 +4,7 @@ import EventCard from "@/components/EventCard/EventCard";
 import { useState, useEffect } from "react";
 import { useSearchParams, Navigate } from "react-router-dom";
 import { getAllEvents } from "../services/eventService";
-import { useAuth } from "../AuthContext";
+import { useAuth } from "../contexts/AuthContext";
 
 function LoadingSpinner() {
   return (

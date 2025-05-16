@@ -42,10 +42,9 @@ export const createBooking = async (req, res) => {
       data: {
         userId: userId,
         eventId: eventId,
-        numberOfTickets: 1, // As per requirement: books 1 ticket per click
+        numberOfTickets: 1, 
       },
       include: {
-        // Optionally include event details in the response
         event: {
           select: { name: true, date: true, venue: true },
         },

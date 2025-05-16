@@ -3,7 +3,7 @@ import LoginForm from "../components/Auth/LoginForm";
 import { login, register } from "../services/authService";
 import RegisterForm from "../components/Auth/RegisterForm";
 import OverlayPanelContent from "../components/Auth/OverlayPanelContent";
-import { useAuth } from "../AuthContext";
+import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 export default function AuthPage() {

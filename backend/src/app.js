@@ -1,7 +1,6 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import path from "path";
 import db from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import eventRoutes from "./routes/eventRoutes.js";
@@ -13,10 +12,6 @@ app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Use absolute path to ensure files are accessible
-const uploadsPath = path.join(process.cwd(), "uploads");
-app.use("/uploads", express.static(uploadsPath));
 
 
 

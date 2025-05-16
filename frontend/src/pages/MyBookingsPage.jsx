@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useAuth } from "../AuthContext";
+import { useAuth } from "../contexts/AuthContext";
 import { getUserBookings, cancelBooking } from "../services/bookingService";
 import { format } from "date-fns";
 import { Ticket, Calendar, MapPin, AlertCircle } from "lucide-react";

@@ -65,23 +65,28 @@ const EventForm = ({ event, onSubmit, isSubmitting }) => {
       // Add all form fields to FormData
       Object.keys(formData).forEach((key) => {
         if (key !== "imageUrl" || formData[key]) {
-          // Only add imageUrl if it exists
+          // Only add imageUrl if it exists and we're not uploading a file
           submitData.append(key, formData[key]);
         }
       });
 
-      // Add the image file
+      // Add the image file - "image" must match the field name expected by the multer middleware
       submitData.append("image", imageFile);
 
+      console.log("Submitting form with image file:", imageFile.name);
       onSubmit(submitData);
-    } else {
-      // No file upload, just submit the regular form data
+    } else if (formData.imageUrl) {
+      // No file upload but we have an image URL
+      console.log("Submitting form with image URL:", formData.imageUrl);
       onSubmit(formData);
+    } else {
+      // Neither file nor URL provided
+      alert("Please provide either an image file or image URL");
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-6 dark:text-white">
       <div>
         <label className="block text-sm font-medium text-gray-700 dark:text-white">
           Event Name
@@ -106,7 +111,7 @@ const EventForm = ({ event, onSubmit, isSubmitting }) => {
           onChange={handleChange}
           required
           rows={4}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
+          className="mt-1 block w-full px-2 py-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
         />
       </div>
 
@@ -182,6 +187,7 @@ const EventForm = ({ event, onSubmit, isSubmitting }) => {
             accept="image/*"
             onChange={handleImageChange}
             className="mt-1"
+            name="image"
           />
 
           {!imageFile && (

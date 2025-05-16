@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../../AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import { getAllEvents, deleteEvent } from "../../services/eventService";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,7 +15,7 @@ const AdminEventListPage = () => {
   const [pagination, setPagination] = useState({
     total: 0,
     page: 1,
-    limit: 10, 
+    limit: 10,
     totalPages: 0,
   });
   const [isLoading, setIsLoading] = useState(true);

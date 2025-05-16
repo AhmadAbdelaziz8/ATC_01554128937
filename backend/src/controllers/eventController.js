@@ -4,23 +4,29 @@ import path from "path";
 // Create a new event
 export const createEvent = async (req, res) => {
   try {
+    console.log("Create event request received", {
+      body: req.body,
+      file: req.file
+        ? {
+            filename: req.file.filename,
+            originalname: req.file.originalname,
+            path: req.file.path,
+            mimetype: req.file.mimetype,
+            size: req.file.size,
+          }
+        : "No file uploaded",
+    });
+
     // extract event data from request body
     const { name, description, category, venue, imageUrl, date, price } =
       req.body;
 
-    // Set up image path - either from uploaded file or provided URL
     let finalImageUrl = imageUrl;
 
-    // Check if we have an uploaded file
     if (req.file) {
-      // Generate URL for the uploaded image
-      const baseUrl = `${req.protocol}://${req.get("host")}`;
-      const filename = path.basename(req.file.path);
-      const relativePath = `/uploads/${filename}`;
-      finalImageUrl = `${baseUrl}${relativePath}`;
+      finalImageUrl = req.file.path;
     }
 
-    // validate required fields
     if (
       !name ||
       !description ||
@@ -30,9 +36,20 @@ export const createEvent = async (req, res) => {
       !date ||
       !price
     ) {
-      return res.status(400).json({ message: "All fields are required" });
+      return res.status(400).json({
+        message: "All fields are required",
+        missingFields: {
+          name: !name,
+          description: !description,
+          category: !category,
+          venue: !venue,
+          image: !finalImageUrl,
+          date: !date,
+          price: !price,
+        },
+      });
     }
-    // create event in database
+
     const eventData = {
       name,
       description,
@@ -46,28 +63,29 @@ export const createEvent = async (req, res) => {
     const newEvent = await prisma.event.create({
       data: eventData,
     });
+
+    console.log("Event created successfully:", newEvent.id);
+
     // return success response
     res.status(201).json(newEvent);
   } catch (error) {
     console.error("Error creating event:", error);
-    res.status(500).json({ message: "Error creating event" });
+    res.status(500).json({
+      message: "Error creating event",
+      error: error.message,
+    });
   }
 };
 
-// Get all events with pagination
+// Get all events
 export const getAllEvents = async (req, res) => {
   try {
-    // Check if user is authenticated (req.user will be set by the auth middleware if token provided)
     const userId = req.user?.id;
-
-    // Get query parameters
     const { location, category, page = 1, limit = 8 } = req.query;
 
-    // Convert page and limit to numbers
     const pageNum = parseInt(page, 10);
     const limitNum = parseInt(limit, 10);
 
-    // Validate pagination parameters
     if (isNaN(pageNum) || isNaN(limitNum) || pageNum < 1 || limitNum < 1) {
       return res.status(400).json({
         message:
@@ -75,13 +93,10 @@ export const getAllEvents = async (req, res) => {
       });
     }
 
-    // Calculate skip value for pagination
-    const skip = (pageNum - 1) * limitNum;
+  const skip = (pageNum - 1) * limitNum;
 
-    // Set up filter conditions
     const whereCondition = {};
 
-    // Add location filter if provided
     if (location) {
       whereCondition.venue = {
         contains: location,
@@ -89,7 +104,6 @@ export const getAllEvents = async (req, res) => {
       };
     }
 
-    // Add category filter if provided
     if (category) {
       whereCondition.category = {
         contains: category,
@@ -97,15 +111,12 @@ export const getAllEvents = async (req, res) => {
       };
     }
 
-    // Get total count for pagination
     const totalEvents = await prisma.event.count({
       where: whereCondition,
     });
 
-    // Calculate total pages
     const totalPages = Math.ceil(totalEvents / limitNum);
 
-    // Fetch paginated events from database with filters
     const events = await prisma.event.findMany({
       where: whereCondition,
       orderBy: { date: "asc" },
@@ -113,9 +124,7 @@ export const getAllEvents = async (req, res) => {
       take: limitNum,
     });
 
-    // If user is authenticated, check which events they've booked
     if (userId) {
-      // Get all bookings for this user
       const userBookings = await prisma.booking.findMany({
         where: { userId },
         select: { eventId: true },
@@ -175,7 +184,6 @@ export const getEventById = async (req, res) => {
       return res.status(404).json({ message: "Event not found" });
     }
 
-    // If user is authenticated, check if they've booked this event
     if (userId) {
       const booking = await prisma.booking.findFirst({
         where: {
@@ -209,21 +217,17 @@ export const updateEvent = async (req, res) => {
 
     // Check if we have an uploaded file
     if (req.file) {
-      // Generate URL for the uploaded image
-      const baseUrl = `${req.protocol}://${req.get("host")}`;
-      const filename = path.basename(req.file.path);
-      const relativePath = `/uploads/${filename}`;
-      updateData.imageUrl = `${baseUrl}${relativePath}`;
+      updateData.imageUrl = req.file.path;
 
+    
       console.log("File uploaded (update):", {
         originalName: req.file.originalname,
-        savedAs: filename,
+        savedAs: path.basename(req.file.path),
         fullPath: req.file.path,
         finalUrl: updateData.imageUrl,
       });
     }
 
-    // convert date to object and price to number
     if (updateData.date) {
       updateData.date = new Date(updateData.date);
     }

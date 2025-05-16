@@ -1,6 +1,6 @@
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { FiSearch } from "react-icons/fi";
-import { useAuth } from "../AuthContext";
+import { useAuth } from "../contexts/AuthContext";
 import { useState, useRef, useEffect } from "react";
 import LocationSearch from "./ui/LocationSearch";
 import ThemeToggle from "./ui/ThemeToggle";

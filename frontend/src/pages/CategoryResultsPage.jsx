@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getAllEvents } from "../services/eventService";
-import { useAuth } from "../AuthContext";
+import { useAuth } from "../contexts/AuthContext";
 import EventCard from "@/components/EventCard/EventCard";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import categories from "../assets/mock/categories-data";

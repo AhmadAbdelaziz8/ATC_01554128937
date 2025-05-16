@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { CheckCircle } from "lucide-react";
 import { getEventById } from "../services/eventService";
-import { useAuth } from "../AuthContext";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function BookConfirmationPage() {
   const { eventId } = useParams();

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { getAllEvents } from "../services/eventService";
-import { useAuth } from "../AuthContext";
+import { useAuth } from "../contexts/AuthContext";
 import EventCard from "@/components/EventCard/EventCard";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
@@ -208,7 +208,9 @@ export default function SearchResultsPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-slate-800 mb-2">{pageTitle}</h1>
+        <h1 className="text-3xl font-bold text-slate-800 dark:text-white mb-2">
+          {pageTitle}
+        </h1>
         {locationParam && (
           <p className="text-slate-600">
             Showing events in{" "}
@@ -216,7 +218,7 @@ export default function SearchResultsPage() {
           </p>
         )}
         {!loading && !error && pagination.total > 0 && (
-          <p className="text-slate-500 mt-1">
+          <p className="text-slate-500 dark:text-white mt-1">
             Showing page {pagination.page} of {pagination.totalPages} (
             {pagination.total} total events
             {locationParam && ` in ${locationParam}`})

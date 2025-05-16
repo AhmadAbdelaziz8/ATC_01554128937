@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { getEventById } from "../services/eventService";
 import { bookEvent } from "../services/bookingService";
-import { useAuth } from "../AuthContext";
+import { useAuth } from "../contexts/AuthContext";
 
 const formatDate = (dateString) => {
   const options = {
