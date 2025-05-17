@@ -49,7 +49,7 @@ npm install
 3. Create a `.env` file in the frontend directory with:
 
 ```
-VITE_API_URL=http://localhost:3000
+VITE_API_URL= { the localhost running the backend }
 ```
 
 4. Start the development server:
@@ -94,7 +94,7 @@ npx prisma migrate dev
 5. Start the server:
 
 ```
-npm start
+npm run dev
 ```
 
 ## Admin Access
