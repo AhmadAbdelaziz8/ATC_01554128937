@@ -103,4 +103,4 @@ To create an admin account, register with the "Request Admin Role" option checke
 
 ### Live Project:
 
-    - https://bookify-io.netlify.app/
+https://bookify-io.netlify.app/
