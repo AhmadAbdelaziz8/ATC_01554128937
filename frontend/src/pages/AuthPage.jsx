@@ -45,8 +45,12 @@ export default function AuthPage() {
         password: registerPassword,
         isRequestingAdminRole: isAdmin,
       });
-      setIsLoginPanelActive(true); // Switch to login panel after successful registration
-      setError("Registration successful! Please log in.");
+
+      const { token, user } = await login({
+        email: registerEmail,
+        password: registerPassword,
+      });
+      loginUser(user, token);
       navigate("/");
     } catch (err) {
       setError(err.message);
