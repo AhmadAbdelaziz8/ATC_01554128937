@@ -10,12 +10,9 @@ const pool = new pg.Pool({
 
 pool.connect((err, client, release) => {
   if (err) {
-    return console.error(
-      "Error initial connection test",
-      err.stack
-    );
+    return console.error("Error initial connection test", err.stack);
   }
-  
+
   client.query("SELECT NOW()", (err, result) => {
     release();
     if (err) {
