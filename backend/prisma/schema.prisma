@@ -49,7 +49,7 @@ model Event {
   name          String
   description   String?
   category      String?
-  date          DateTime  // Event date and time
+  date          DateTime  
   venue         String?
   price         Decimal   @default(0.00)
   imageUrl      String?
