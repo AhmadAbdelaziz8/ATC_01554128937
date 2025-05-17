@@ -4,7 +4,6 @@ import { Navigate, Outlet } from "react-router-dom";
 const ProtectedAdminRoute = () => {
   const { user, isAuthenticated, loading } = useAuth();
 
-  // Show loading indicator while auth state is being determined
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
