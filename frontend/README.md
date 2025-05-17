@@ -24,7 +24,7 @@ npm install
 2. Create a `.env` file in the frontend directory with:
 
 ```
-VITE_API_URL=http://localhost:3000
+VITE_API_URL= { localhost running the backend }
 ```
 
 3. Start the development server:
@@ -45,10 +45,9 @@ npm run build
 - `src/pages` - Main application pages
 - `src/services` - API service functions
 - `src/contexts` - React context providers
-- `src/hooks` - Custom React hooks
 
 ## Requirements
 
-- Node.js 14+
-- npm or yarn
+- Node.js 14+ installed
+- npm 
 - Backend API running
