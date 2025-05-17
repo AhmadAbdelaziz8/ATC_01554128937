@@ -14,7 +14,6 @@ A full-stack event booking application that allows users to browse and book even
 - Booking confirmation screen
 - User bookings management
 - Location-based search functionality
-- Dark mode support
 
 ### Backend
 
@@ -24,6 +23,12 @@ A full-stack event booking application that allows users to browse and book even
 - Role-based permissions (Admin, User)
 - Event image upload functionality
 - Pagination for event listings
+
+### super-heros features:
+
+- deployment: frontend in netilfy, backend in fly.io, database in neon.tech
+- dark-mode.
+
 
 ## Setup Instructions
 
@@ -70,10 +75,14 @@ npm install
 3. Create a `.env` file in the backend directory with:
 
 ```
-PORT=3000
+PORT= "..."
 DATABASE_URL="your_database_connection_string"
 JWT_SECRET_KEY="your_jwt_secret"
 JWT_EXPIRES_IN="1d"
+
+CLOUDINARY_CLOUD_NAME = ""
+CLOUDINARY_API_KEY = ""
+CLOUDINARY_API_SECRET = ""
 ```
 
 4. Set up the database:
@@ -91,3 +100,7 @@ npm start
 ## Admin Access
 
 To create an admin account, register with the "Request Admin Role" option checked. In a production environment, this would be handled through a more secure process.
+
+### Live Project:
+
+    - https://bookify-io.netlify.app/
