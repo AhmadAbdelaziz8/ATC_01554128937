@@ -1,7 +1,7 @@
 import {
-  Music,
+  GraduationCap,
   Zap,
-  Clapperboard,
+  BookOpen,
   CalendarDays,
   Gamepad2,
   Briefcase,
@@ -10,25 +10,25 @@ import {
 
 const categories = [
   {
-    name: "Music",
-    icon: Music,
+    name: "Workshops",
+    icon: GraduationCap,
     color: "text-blue-500",
     bgColor: "bg-blue-100",
-    link: "/events/category/music",
+    link: "/events/category/workshops",
   },
   {
-    name: "Nightlife",
+    name: "Networking",
     icon: Zap,
     color: "text-purple-500",
     bgColor: "bg-purple-100",
-    link: "/events/category/nightlife",
+    link: "/events/category/networking",
   },
   {
-    name: "Performing Arts",
-    icon: Clapperboard,
+    name: "Educational",
+    icon: BookOpen,
     color: "text-red-500",
     bgColor: "bg-red-100",
-    link: "/events/category/performing-arts",
+    link: "/events/category/educational",
   },
   {
     name: "Holidays",

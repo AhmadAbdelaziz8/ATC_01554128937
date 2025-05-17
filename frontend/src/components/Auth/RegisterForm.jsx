@@ -19,14 +19,14 @@ const RegisterForm = ({
   return (
     <form
       onSubmit={onSubmit}
-      className="bg-white flex flex-col items-center justify-center h-full px-6 sm:px-12 text-center"
+      className="bg-white dark:bg-gray-800 flex flex-col items-center justify-center h-full px-6 sm:px-12 text-center"
     >
       <CardHeader className="w-full p-0 mb-6">
-        <CardTitle className="text-3xl font-bold text-slate-800">
+        <CardTitle className="text-3xl font-bold text-slate-800 dark:text-white">
           Create Account
         </CardTitle>
-        <CardDescription className="text-slate-500 mt-2">
-          to start booking your favorite events
+        <CardDescription className="text-slate-500 dark:text-slate-400 mt-2">
+          to start booking amazing events
         </CardDescription>
       </CardHeader>
       <div className="w-full space-y-4 mb-6 max-w-xs mx-auto">
@@ -36,7 +36,7 @@ const RegisterForm = ({
             type="text"
             placeholder="Full Name"
             required
-            className="pl-10 h-11"
+            className="pl-10 h-11 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
@@ -47,7 +47,7 @@ const RegisterForm = ({
             type="email"
             placeholder="Email"
             required
-            className="pl-10 h-11"
+            className="pl-10 h-11 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
@@ -58,37 +58,42 @@ const RegisterForm = ({
             type="password"
             placeholder="Password"
             required
-            className="pl-10 h-11"
+            className="pl-10 h-11 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center">
           <input
+            id="admin-role"
             type="checkbox"
-            id="isAdmin"
-            className="rounded text-blue-600 focus:ring-blue-500"
+            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700"
             checked={isAdmin}
             onChange={(e) => setIsAdmin(e.target.checked)}
           />
-          <label htmlFor="isAdmin" className="text-sm text-slate-600 text-left">
-            Register as Administrator
+          <label
+            htmlFor="admin-role"
+            className="ml-2 block text-sm text-slate-600 dark:text-slate-300"
+          >
+            Request Admin Role
           </label>
         </div>
       </div>
-      {error && <p className="text-sm text-red-500 mb-4">{error}</p>}
+      {error && (
+        <p className="text-sm text-red-500 dark:text-red-400 mb-4">{error}</p>
+      )}
       <Button
         type="submit"
         className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-12 rounded-full text-sm uppercase tracking-wider transition-transform duration-150 hover:scale-105"
       >
         Sign Up
       </Button>
-      <p className="mt-6 text-sm text-slate-600">
+      <p className="mt-6 text-sm text-slate-600 dark:text-slate-300">
         Already have an account?{" "}
         <button
           type="button"
           onClick={onTogglePanel}
-          className="font-semibold text-blue-600 hover:text-blue-700 hover:underline focus:outline-none"
+          className="font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 hover:underline focus:outline-none"
         >
           Sign In
         </button>

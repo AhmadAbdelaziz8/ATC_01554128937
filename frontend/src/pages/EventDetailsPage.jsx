@@ -85,7 +85,7 @@ export default function EventDetailsPage() {
   if (isLoading) {
     return (
       <div className="text-center py-10">
-        <p className="text-xl text-slate-600">Loading event details...</p>
+        <p className="text-xl text-slate-600 dark:text-slate-300">Loading event details...</p>
       </div>
     );
   }
@@ -100,7 +100,7 @@ export default function EventDetailsPage() {
         <h1 className="text-2xl font-semibold text-red-600 mb-4">
           Event Not Found
         </h1>
-        <p className="text-slate-600">
+        <p className="text-slate-600 dark:text-slate-300">
           The event you are looking for does not exist or may have been removed.
         </p>
         <Link
@@ -115,7 +115,7 @@ export default function EventDetailsPage() {
 
   return (
     <div className="container mx-auto max-w-4xl py-8 px-4">
-      <div className="bg-white shadow-xl rounded-lg overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 shadow-xl rounded-lg overflow-hidden">
         {/* Event Image */}
         <img
           src={
@@ -128,12 +128,12 @@ export default function EventDetailsPage() {
 
         <div className="p-6 md:p-8">
           {/* Event Name */}
-          <h1 className="text-3xl sm:text-4xl font-bold text-slate-800 mb-4">
+          <h1 className="text-3xl sm:text-4xl font-bold text-slate-800 dark:text-white mb-4">
             {event.name}
           </h1>
 
           {/* Event info */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 mb-6 text-slate-700">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 mb-6 text-slate-700 dark:text-slate-200">
             <div className="flex items-start">
               <Tag className="w-5 h-5 mr-3 mt-1 text-orange-500 flex-shrink-0" />
               <div>
@@ -165,11 +165,11 @@ export default function EventDetailsPage() {
 
           {/* Event Description */}
           <div className="mb-8">
-            <h2 className="text-2xl font-semibold text-slate-700 mb-3 flex items-center">
+            <h2 className="text-2xl font-semibold text-slate-700 dark:text-slate-200 mb-3 flex items-center">
               <Info className="w-6 h-6 mr-2 text-orange-500" />
               About this Event
             </h2>
-            <p className="text-slate-600 leading-relaxed whitespace-pre-line">
+            <p className="text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-line">
               {event.description}
             </p>
           </div>
@@ -182,7 +182,7 @@ export default function EventDetailsPage() {
 
             {event.isBooked ? (
               <div className="mb-4">
-                <div className="text-green-600 font-medium mb-2">
+                <div className="text-green-600 dark:text-green-400 font-medium mb-2">
                   You've already booked this event!
                 </div>
                 <Link
@@ -222,7 +222,7 @@ export default function EventDetailsPage() {
             )}
 
             {!isAuthenticated && (
-              <div className="mt-3 text-sm text-gray-600">
+              <div className="mt-3 text-sm text-gray-600 dark:text-gray-300">
                 You need to be logged in to book this event.
               </div>
             )}

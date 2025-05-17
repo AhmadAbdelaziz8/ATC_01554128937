@@ -65,8 +65,8 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-80px)] flex items-center justify-center bg-gradient-to-br from-sky-100 via-blue-50 to-indigo-100 p-4">
-      <div className="relative bg-white rounded-xl shadow-2xl w-full max-w-4xl min-h-[550px] sm:min-h-[500px] overflow-hidden">
+    <div className="min-h-[calc(100vh-80px)] flex items-center justify-center bg-gradient-to-br from-sky-100 via-blue-50 to-indigo-100 dark:from-gray-900 dark:via-slate-800 dark:to-gray-950 p-4">
+      <div className="relative bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-4xl min-h-[550px] sm:min-h-[500px] overflow-hidden">
         {/* Login Form Container */}
         <div
           className={`absolute top-0 h-full transition-all duration-700 ease-in-out w-full md:w-1/2
