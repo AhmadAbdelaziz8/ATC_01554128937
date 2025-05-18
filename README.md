@@ -26,9 +26,8 @@ A full-stack event booking application that allows users to browse and book even
 
 ### super-heros features:
 
-- deployment: frontend in netilfy, backend in fly.io, database in neon.tech
+- deployment: frontend in netilfy, backend in VERCEL, database in neon.tech
 - dark-mode.
-
 
 ## Setup Instructions
 
