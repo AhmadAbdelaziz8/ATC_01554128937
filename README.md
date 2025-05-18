@@ -27,7 +27,10 @@ A full-stack event booking application that allows users to browse and book even
 ### super-heros features:
 
 - deployment: frontend in netilfy, backend in fly.io, database in neon.tech
+-   unfortunately, the free trial of fly.io has ended.
 - dark-mode.
+
+
 
 
 ## Setup Instructions
