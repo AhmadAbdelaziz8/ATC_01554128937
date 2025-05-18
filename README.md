@@ -102,6 +102,9 @@ npm run dev
 
 To create an admin account, register with the "Request Admin Role" option checked. In a production environment, this would be handled through a more secure process.
 
+## acknowledgment: 
+- seed file is AI generated to populate the database with mockdata 
+
 ### Live Project:
 
 https://bookify-io.netlify.app/
