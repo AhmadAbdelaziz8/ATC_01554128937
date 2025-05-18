@@ -10,7 +10,6 @@ export async function getAllEvents(
 ) {
   const headers = {};
 
-
   if (token) {
     headers.Authorization = `Bearer ${token}`;
   }
@@ -135,5 +134,5 @@ export async function deleteEvent(eventId, token) {
     throw new Error(data.message || "Failed to delete event");
   }
 
-  return true; 
+  return true;
 }

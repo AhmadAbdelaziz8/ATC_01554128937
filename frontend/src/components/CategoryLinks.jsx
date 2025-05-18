@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import categories from "../assets/mock/categories-data";
+import categories from "../data/categories-data";
 
 export default function CategoryLinks() {
   return (

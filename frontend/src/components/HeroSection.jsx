@@ -5,7 +5,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import heroItems from "@/assets/mock/carousel-data";
+import heroItems from "@/data/carousel-data";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
 

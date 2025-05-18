@@ -4,7 +4,7 @@ import { getAllEvents } from "../services/eventService";
 import { useAuth } from "../contexts/AuthContext";
 import EventCard from "@/components/EventCard/EventCard";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import categories from "../assets/mock/categories-data";
+import categories from "../data/categories-data";
 
 // Loading Spinner Component
 function LoadingSpinner() {
